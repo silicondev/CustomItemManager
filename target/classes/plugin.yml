@@ -1,0 +1,13 @@
+name: CustomItemManager
+main: io.github.silicondev.customitemmanager.CustomItemManager
+version: 0.0.1-SNAPSHOT
+author: silicondev
+permissions:
+  customitemmanager.test:
+    default: true
+commands:
+  customitem:
+    description: "Tests the plugin."
+    permission: customitemmanager.test
+    usage: TEST.
+    permission-message: "[CustomItemManager] Requires permission customitemmanager.test to run!"

@@ -3,7 +3,6 @@ package io.github.silicondev.customitemmanager;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -100,7 +99,15 @@ public class CommandExec implements CommandExecutor {
 		} else if (args.size() > CustomItemManager.commands.get(id).maxParams && !CustomItemManager.commands.get(id).noMaxParams) {
 			sender.sendMessage(CustomItemManager.pluginBC + " ERR: Too many arguments! " + Integer.toString(args.size()) + "/" + Integer.toString(CustomItemManager.commands.get(id).maxParams) + "!\n");
 		} else {
-			if (id == 1) {
+			if (id == 0) {
+				sender.sendMessage("DEFAULT COMMAND.");
+				hasRun = true;
+				if (args.size() > 0) {
+					CustomItemManager.comOut.help(sender, true, args.get(0));
+				} else {
+					CustomItemManager.comOut.help(sender, false, null);
+				}
+			} else if (id == 1) {
 				hasRun = true;
 				if (args.size() > 0) {
 					for (int i = 0; i < args.size(); i++) {
@@ -108,6 +115,13 @@ public class CommandExec implements CommandExecutor {
 					}
 				} else {
 					CustomItemManager.comOut.test(sender, false, null);
+				}
+			} else if (id == 2) {
+				hasRun = true;
+				if (args.size() > 0) {
+					CustomItemManager.comOut.help(sender, true, args.get(0));
+				} else {
+					CustomItemManager.comOut.help(sender, false, null);
 				}
 			}
 		}

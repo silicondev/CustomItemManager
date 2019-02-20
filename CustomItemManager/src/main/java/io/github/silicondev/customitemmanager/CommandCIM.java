@@ -9,6 +9,7 @@ public class CommandCIM {
 	int reqParams = 0;     //Required number of arguments for the command.
 	int optParams = 0;     //Optional number of arguments for the command.
 	int maxParams = 0;     //Maximum number of arguments for the command.
+	boolean noMaxParams = false;
 	boolean playerOnly = false;
 	String permNode;
 	List<CommandCIM> children = new ArrayList<CommandCIM>();
@@ -17,6 +18,9 @@ public class CommandCIM {
 	public CommandCIM(String i, int rNum, int oNum, boolean playOnly, boolean cchildren, int outID, String perm) {
 		inputName = i;
 		reqParams = rNum;
+		if (oNum == -1) {
+			noMaxParams = true;
+		}
 		optParams = oNum;
 		outputID = outID;
 		playerOnly = playOnly;

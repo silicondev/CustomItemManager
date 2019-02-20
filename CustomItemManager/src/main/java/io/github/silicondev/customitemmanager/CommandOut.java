@@ -9,7 +9,11 @@ public class CommandOut {
 		this.pluginBC = pluginBC;
 	}
 	
-	public void test(CommandSender sender) {
-		sender.sendMessage(pluginBC + " Test command successful!");
+	public void test(CommandSender sender, boolean hasArgs, String arg) {
+		if (hasArgs) {
+			sender.sendMessage(pluginBC + " Test command successful! Test arg: " + arg);
+		} else {
+			sender.sendMessage(pluginBC + " Test command successful with no arguments!");
+		}
 	}
 }

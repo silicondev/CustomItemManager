@@ -33,27 +33,23 @@ public class CommandExec implements CommandExecutor {
 					if (CustomItemManager.debugMode) {sender.sendMessage(CustomItemManager.pluginBC + " DEBUG: Command " + runCmd.inputName + " has children commands!");}
 					boolean found = false;
 					int argsFrom = 0;
+					
+					List<CommandCIM> children = getCom[i].children;
 					for (int a = 0; a < finArgs.size() && !found; a++) {
 						if (CustomItemManager.debugMode) {sender.sendMessage(CustomItemManager.pluginBC + " DEBUG: Checking argument (" + finArgs.get(a) + ")");}
-						List<CommandCIM> children = new ArrayList<CommandCIM>();
-						List<CommandCIM> newChildren = new ArrayList<CommandCIM>();
 						
-						if (a == 0) {
-							children = getCom[i].children;
-						} else {
-							children = newChildren;
-						}
-						
-						for (int c = 0; c < children.size() && !found; c++) {
+						boolean childFound = false;
+						for (int c = 0; c < children.size() && !childFound; c++) {
 							if (CustomItemManager.debugMode) {sender.sendMessage(CustomItemManager.pluginBC + " DEBUG: Checking children: (" + children.get(c).inputName + ")");}
 							if (children.get(c).inputName.equalsIgnoreCase(finArgs.get(a))) {
+								childFound = true;
 								if (CustomItemManager.debugMode) {sender.sendMessage(CustomItemManager.pluginBC + " DEBUG: Match found!");}
 								if (children.get(c).canChildren && children.get(c).children.size() != 0) {
 									if (CustomItemManager.debugMode) {sender.sendMessage(CustomItemManager.pluginBC + " DEBUG: Child has children, running through.");}
-									newChildren = children.get(c).children;
+									children = children.get(c).children;
 								} else {
-									if (CustomItemManager.debugMode) {sender.sendMessage(CustomItemManager.pluginBC + " DEBUG: Final command found, setting argument placeholder.");}
 									found = true;
+									if (CustomItemManager.debugMode) {sender.sendMessage(CustomItemManager.pluginBC + " DEBUG: Final command found, setting argument placeholder.");}
 									runCmd = children.get(c);
 									if (CustomItemManager.debugMode) {sender.sendMessage(CustomItemManager.pluginBC + " DEBUG: runCmd is now " + runCmd.inputName);}
 									argsFrom = a + 1;
@@ -65,8 +61,12 @@ public class CommandExec implements CommandExecutor {
 					if (CustomItemManager.debugMode) {sender.sendMessage(CustomItemManager.pluginBC + " DEBUG: Num of arguments: " + Integer.toString(finArgs.size()) + ". Num of arguments to remove: " + Integer.toString(argsFrom));}
 					if (argsFrom != 0) {
 						for (int d = 0; d < argsFrom; d++) {
-							if (CustomItemManager.debugMode) {sender.sendMessage(CustomItemManager.pluginBC + " DEBUG: Removed argument " + Integer.toString(d));}
-							finArgs.remove(d);
+							if (CustomItemManager.debugMode) {sender.sendMessage(CustomItemManager.pluginBC + " DEBUG: Removed argument (" + Integer.toString(d) + ") " + finArgs.get(0));}
+							finArgs.remove(0);
+						}
+						if (CustomItemManager.debugMode) {sender.sendMessage(CustomItemManager.pluginBC + " DEBUG: Remaining arguments:");}
+						for (int a = 0; a < finArgs.size(); a++) {
+							if (CustomItemManager.debugMode) {sender.sendMessage(CustomItemManager.pluginBC + " DEBUG: Arg (" + Integer.toString(a) + ") " + finArgs.get(a));}
 						}
 					}
 				}
@@ -123,6 +123,18 @@ public class CommandExec implements CommandExecutor {
 				} else {
 					CustomItemManager.comOut.help(sender, false, null);
 				}
+			} else if (id == 3) {
+				
+			} else if (id == 4) {
+				hasRun = true;
+				CustomItemManager.comOut.addItem(sender, args.get(0));
+			} else if (id == 5) {
+				
+			} else if (id == 6) {
+				
+			} else if (id == 7) {
+				hasRun = true;
+				CustomItemManager.comOut.listItems(sender);
 			}
 		}
 		

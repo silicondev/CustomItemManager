@@ -10,9 +10,25 @@ permissions:
       customitemmanager.test: true
       customitemmanager.help: true
   customitemmanager.test:
+    description: "Tests the plugin."
     default: true
   customitemmanager.help:
-    description: "Displays help message."
+    description: "Displays the help text."
+    default: true
+  customitemmanager.item:
+    description: "Base command for item management."
+    default: true
+  customitemmanager.item.set:
+    description: "Saves a custom item to the database."
+    default: true
+  customitemmanager.item.spawn:
+    description: "Spawns a custom item from the database."
+    default: true
+  customitemmanager.item.delete:
+    description: "Deletes a custom item from the database."
+    default: true
+  customitemmanager.item.list:
+    description: "Lists all custom items in the database."
     default: true
 commands:
   customitem:

@@ -31,6 +31,8 @@
     			<directory>${basedir}/src/main/resources</directory>
     			<includes>
     				<include>plugin.yml</include>
+    				<include>items.yml</include>
+    				<include>ids.yml</include>
     			</includes>
     		</resource>
     	</resources>

@@ -93,7 +93,7 @@ public class CommandExec implements CommandExecutor {
 		return false;
 	}
 	
-	public static void commandHandle(int id, List<String> args, CommandSender sender) {
+	public void commandHandle(int id, List<String> args, CommandSender sender) {
 		boolean hasRun = true;
 		
 		if (args.size() < CustomItemManager.commands.get(id).reqParams) {     //Checks if command has correct amount of arguments, between the required and max. (Can allow for optional arguments)
@@ -132,6 +132,8 @@ public class CommandExec implements CommandExecutor {
 				CustomItemManager.comOut.deleteItem(sender, args.get(0));
 			} else if (id == 7) {
 				CustomItemManager.comOut.listItems(sender);
+			} else if (id == 8) {
+				plugin.save();
 			} else {
 				hasRun = false;
 			}

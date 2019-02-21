@@ -6,8 +6,22 @@ public class CustomItem {
 	String id;
 	ItemStack item;
 	
-	public CustomItem(String i, ItemStack itm) {
-		item = itm;
-		id = i;
+	public CustomItem() {
+	}
+	
+	public String getId() {
+		return id;
+	}
+	
+	public ItemStack getItem() {
+		return item;
+	}
+	
+	public void setId(String id) {
+		this.id = id;
+	}
+	
+	public void setItem(ItemStack item) {
+		this.item = item;
 	}
 }

@@ -74,7 +74,11 @@ public class CommandOut {
 		lore.add(id);
 		meta.setLore(lore);
 		item.setItemMeta(meta);
-		CustomItemManager.savedItems.add(new CustomItem(id, item));
+		
+		CustomItem ci = new CustomItem();
+		ci.setId(id);
+		ci.setItem(item);
+		CustomItemManager.savedItems.add(ci);
 		player.getInventory().setItemInMainHand(item);
 		sender.sendMessage(CustomItemManager.pluginBC + " Item saved!");
 	}
@@ -85,11 +89,11 @@ public class CommandOut {
 			CustomItem ci = CustomItemManager.savedItems.get(i);
 			String itemName = "NULL";
 			if (ci.item.getItemMeta().hasDisplayName()) {
-				itemName = ci.item.getItemMeta().getDisplayName();
+				itemName = ci.getItem().getItemMeta().getDisplayName();
 			} else {
-				itemName = ci.item.getType().name();
+				itemName = ci.getItem().getType().name();
 			}
-			sender.sendMessage(CustomItemManager.pluginBC + " " + itemName +" (" + ci.id + ")");
+			sender.sendMessage(CustomItemManager.pluginBC + " " + itemName +" (" + ci.getId() + ")");
 		}
 	}
 	
@@ -99,7 +103,7 @@ public class CommandOut {
 		for (int i = 0; i < CustomItemManager.savedItems.size(); i++) {
 			if (id.equals(CustomItemManager.savedItems.get(i).id)) {
 				found = true;
-				player.getInventory().addItem(CustomItemManager.savedItems.get(i).item);
+				player.getInventory().addItem(CustomItemManager.savedItems.get(i).getItem());
 				sender.sendMessage(CustomItemManager.pluginBC + " Item spawned!");
 			}
 		}
@@ -112,7 +116,7 @@ public class CommandOut {
 		boolean found = false;
 		Player player = (Player)sender;
 		for (int i = 0; i < CustomItemManager.savedItems.size(); i++) {
-			if (id.equals(CustomItemManager.savedItems.get(i).id)) {
+			if (id.equals(CustomItemManager.savedItems.get(i).getId())) {
 				found = true;
 				CustomItemManager.savedItems.remove(i);
 				sender.sendMessage(CustomItemManager.pluginBC + " Item removed!");

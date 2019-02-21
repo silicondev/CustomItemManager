@@ -76,6 +76,7 @@ public class CommandOut {
 		item.setItemMeta(meta);
 		CustomItemManager.savedItems.add(new CustomItem(id, item));
 		player.getInventory().setItemInMainHand(item);
+		sender.sendMessage(CustomItemManager.pluginBC + " Item saved!");
 	}
 	
 	public void listItems(CommandSender sender) {
@@ -89,6 +90,36 @@ public class CommandOut {
 				itemName = ci.item.getType().name();
 			}
 			sender.sendMessage(CustomItemManager.pluginBC + " " + itemName +" (" + ci.id + ")");
+		}
+	}
+	
+	public void spawnItem(CommandSender sender, String id) {
+		boolean found = false;
+		Player player = (Player)sender;
+		for (int i = 0; i < CustomItemManager.savedItems.size(); i++) {
+			if (id.equals(CustomItemManager.savedItems.get(i).id)) {
+				found = true;
+				player.getInventory().addItem(CustomItemManager.savedItems.get(i).item);
+				sender.sendMessage(CustomItemManager.pluginBC + " Item spawned!");
+			}
+		}
+		if (!found) {
+			sender.sendMessage(CustomItemManager.pluginBC + " ERR: Item not found!");
+		}
+	}
+	
+	public void deleteItem(CommandSender sender, String id) {
+		boolean found = false;
+		Player player = (Player)sender;
+		for (int i = 0; i < CustomItemManager.savedItems.size(); i++) {
+			if (id.equals(CustomItemManager.savedItems.get(i).id)) {
+				found = true;
+				CustomItemManager.savedItems.remove(i);
+				sender.sendMessage(CustomItemManager.pluginBC + " Item removed!");
+			}
+		}
+		if (!found) {
+			sender.sendMessage(CustomItemManager.pluginBC + " ERR: Item not found!");
 		}
 	}
 }

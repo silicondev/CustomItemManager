@@ -7,7 +7,7 @@ import java.util.List;
 public class CustomItemManager extends JavaPlugin {
 	public static String pluginName = "CustomItemManager";
 	public static String pluginBC = "[" + pluginName + "]";
-	public static boolean debugMode = true;
+	public static boolean debugMode = false;
 	public static String version = "inDev 0.0.2";
 	
 	static CommandOut comOut = new CommandOut(pluginBC);

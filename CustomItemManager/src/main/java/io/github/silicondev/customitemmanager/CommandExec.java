@@ -64,9 +64,11 @@ public class CommandExec implements CommandExecutor {
 							if (CustomItemManager.debugMode) {sender.sendMessage(CustomItemManager.pluginBC + " DEBUG: Removed argument (" + Integer.toString(d) + ") " + finArgs.get(0));}
 							finArgs.remove(0);
 						}
-						if (CustomItemManager.debugMode) {sender.sendMessage(CustomItemManager.pluginBC + " DEBUG: Remaining arguments:");}
-						for (int a = 0; a < finArgs.size(); a++) {
-							if (CustomItemManager.debugMode) {sender.sendMessage(CustomItemManager.pluginBC + " DEBUG: Arg (" + Integer.toString(a) + ") " + finArgs.get(a));}
+						if (CustomItemManager.debugMode) {
+							sender.sendMessage(CustomItemManager.pluginBC + " DEBUG: Remaining arguments:");
+							for (int a = 0; a < finArgs.size(); a++) {
+								sender.sendMessage(CustomItemManager.pluginBC + " DEBUG: Arg (" + Integer.toString(a) + ") " + finArgs.get(a));
+							}
 						}
 					}
 				}
@@ -92,7 +94,7 @@ public class CommandExec implements CommandExecutor {
 	}
 	
 	public static void commandHandle(int id, List<String> args, CommandSender sender) {
-		boolean hasRun = false;
+		boolean hasRun = true;
 		
 		if (args.size() < CustomItemManager.commands.get(id).reqParams) {     //Checks if command has correct amount of arguments, between the required and max. (Can allow for optional arguments)
 			sender.sendMessage(CustomItemManager.pluginBC + " ERR: Not enough arguments! " + Integer.toString(args.size()) + "/" + Integer.toString(CustomItemManager.commands.get(id).reqParams) + "!\n");
@@ -101,14 +103,12 @@ public class CommandExec implements CommandExecutor {
 		} else {
 			if (id == 0) {
 				sender.sendMessage("DEFAULT COMMAND.");
-				hasRun = true;
 				if (args.size() > 0) {
 					CustomItemManager.comOut.help(sender, true, args.get(0));
 				} else {
 					CustomItemManager.comOut.help(sender, false, null);
 				}
 			} else if (id == 1) {
-				hasRun = true;
 				if (args.size() > 0) {
 					for (int i = 0; i < args.size(); i++) {
 						CustomItemManager.comOut.test(sender, true, args.get(i));
@@ -117,7 +117,6 @@ public class CommandExec implements CommandExecutor {
 					CustomItemManager.comOut.test(sender, false, null);
 				}
 			} else if (id == 2) {
-				hasRun = true;
 				if (args.size() > 0) {
 					CustomItemManager.comOut.help(sender, true, args.get(0));
 				} else {
@@ -126,15 +125,15 @@ public class CommandExec implements CommandExecutor {
 			} else if (id == 3) {
 				
 			} else if (id == 4) {
-				hasRun = true;
 				CustomItemManager.comOut.addItem(sender, args.get(0));
 			} else if (id == 5) {
-				
+				CustomItemManager.comOut.spawnItem(sender, args.get(0));
 			} else if (id == 6) {
-				
+				CustomItemManager.comOut.deleteItem(sender, args.get(0));
 			} else if (id == 7) {
-				hasRun = true;
 				CustomItemManager.comOut.listItems(sender);
+			} else {
+				hasRun = false;
 			}
 		}
 		

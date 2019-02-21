@@ -3,7 +3,7 @@
   
   <groupId>io.github.silicondev</groupId>
   <artifactId>CustomItemManager</artifactId>
-  <version>0.0.2-SNAPSHOT</version>
+  <version>0.0.3-SNAPSHOT</version>
   
   <repositories>
         <repository>

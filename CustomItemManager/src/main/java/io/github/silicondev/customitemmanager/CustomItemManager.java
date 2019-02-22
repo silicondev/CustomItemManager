@@ -16,7 +16,7 @@ import java.util.List;
 public class CustomItemManager extends JavaPlugin {
 	public static String pluginName = "CustomItemManager";
 	public static boolean debugMode = false;
-	public static String version = "inDev 0.0.5";
+	public static String version = "Beta 0.1.0";
 	private FileConfiguration itemConfig;
 	private FileConfiguration idConfig;
 	public static YamlConfiguration langConfig;

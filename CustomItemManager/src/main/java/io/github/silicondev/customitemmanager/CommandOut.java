@@ -6,25 +6,28 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.MainHand;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class CommandOut {
+	String pluginBC;
 	
-	public CommandOut() {
-		
+	public CommandOut(String pluginBC) {
+		this.pluginBC = pluginBC;
 	}
 	
 	public void test(CommandSender sender, boolean hasArgs, String arg) {
 		if (hasArgs) {
-			sender.sendMessage(Lang.TITLE.toString() + Lang.TEST_ARG.toString() + arg);
+			sender.sendMessage(pluginBC + " Test command successful! Test arg: " + arg);
 		} else {
-			sender.sendMessage(Lang.TITLE.toString() + Lang.TEST_NOARG.toString());
+			sender.sendMessage(pluginBC + " Test command successful with no arguments!");
 		}
 	}
 	
 	public void help(CommandSender sender, boolean hasArgs, String arg) {
-		sender.sendMessage(Lang.TITLE.toString() + CustomItemManager.version);
-		sender.sendMessage(Lang.HELP_TITLE.toString());
+		sender.sendMessage("CustomItemManager " + CustomItemManager.version);
+		sender.sendMessage("Searched commands:");
 		if (hasArgs) {
 			boolean found = false;
 			for (int i = 0; i < CustomItemManager.commands.size() && !found; i++) {
@@ -38,7 +41,7 @@ public class CommandOut {
 				displayCommandHelp(sender, CustomItemManager.commands.get(i));
 			}
 		}
-		sender.sendMessage(Lang.HELP_FOOTER.toString());
+		sender.sendMessage("=====");
 	}
 	
 	public void displayCommandHelp(CommandSender sender, CommandCIM cmd) {
@@ -57,7 +60,7 @@ public class CommandOut {
 		} else {
 			output = cmd.inputName;
 		}
-		sender.sendMessage(Lang.HELP_COMMAND_HEADER.toString() + output + " | " + cmd.description);
+		sender.sendMessage("> /" + output + " | " + cmd.description);
 	}
 	
 	public void addItem(CommandSender sender, String id) {
@@ -77,11 +80,11 @@ public class CommandOut {
 		ci.setItem(item);
 		CustomItemManager.savedItems.add(ci);
 		player.getInventory().setItemInMainHand(item);
-		sender.sendMessage(Lang.TITLE.toString() + Lang.ITEM_SAVED.toString());
+		sender.sendMessage(CustomItemManager.pluginBC + " Item saved!");
 	}
 	
 	public void listItems(CommandSender sender) {
-		sender.sendMessage(Lang.TITLE.toString() + Lang.ITEM_LIST_TITLE.toString());
+		sender.sendMessage(CustomItemManager.pluginBC + " All items:");
 		for (int i = 0; i < CustomItemManager.savedItems.size(); i++) {
 			CustomItem ci = CustomItemManager.savedItems.get(i);
 			String itemName = "NULL";
@@ -90,9 +93,8 @@ public class CommandOut {
 			} else {
 				itemName = ci.getItem().getType().name();
 			}
-			sender.sendMessage(Lang.TITLE.toString() + itemName +" (" + ci.getId() + ")");
+			sender.sendMessage(CustomItemManager.pluginBC + " " + itemName +" (" + ci.getId() + ")");
 		}
-		sender.sendMessage(Lang.ITEM_LIST_FOOTER.toString());
 	}
 	
 	public void spawnItem(CommandSender sender, String id) {
@@ -102,25 +104,26 @@ public class CommandOut {
 			if (id.equals(CustomItemManager.savedItems.get(i).id)) {
 				found = true;
 				player.getInventory().addItem(CustomItemManager.savedItems.get(i).getItem());
-				sender.sendMessage(Lang.TITLE.toString() + Lang.ITEM_SPAWNED.toString());
+				sender.sendMessage(CustomItemManager.pluginBC + " Item spawned!");
 			}
 		}
 		if (!found) {
-			sender.sendMessage(Lang.TITLE.toString() + Lang.ERR_NOITEM.toString());
+			sender.sendMessage(CustomItemManager.pluginBC + " ERR: Item not found!");
 		}
 	}
 	
 	public void deleteItem(CommandSender sender, String id) {
 		boolean found = false;
+		Player player = (Player)sender;
 		for (int i = 0; i < CustomItemManager.savedItems.size(); i++) {
 			if (id.equals(CustomItemManager.savedItems.get(i).getId())) {
 				found = true;
 				CustomItemManager.savedItems.remove(i);
-				sender.sendMessage(Lang.TITLE.toString() + Lang.ITEM_DELETED.toString());
+				sender.sendMessage(CustomItemManager.pluginBC + " Item removed!");
 			}
 		}
 		if (!found) {
-			sender.sendMessage(Lang.TITLE.toString() + Lang.ERR_NOITEM.toString());
+			sender.sendMessage(CustomItemManager.pluginBC + " ERR: Item not found!");
 		}
 	}
 }

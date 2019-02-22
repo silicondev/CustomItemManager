@@ -27,47 +27,47 @@ public class CommandExec implements CommandExecutor {
 				List<String> finArgs = new ArrayList<String>(Arrays.asList(args));
 				
 				CommandCIM runCmd = getCom[i];
-				if (CustomItemManager.debugMode) {plugin.getLogger().info(Lang.DEB_COMMANDFOUND.toString() + runCmd.inputName);}
+				if (CustomItemManager.debugMode) {sender.sendMessage(CustomItemManager.pluginBC + " DEBUG: Command found: " + runCmd.inputName);}
 				
 				if (getCom[i].canChildren && getCom[i].children.size() != 0) {
-					if (CustomItemManager.debugMode) {plugin.getLogger().info(Lang.DEB_COMMANDCHILDREN_1.toString() + runCmd.inputName + Lang.DEB_COMMANDCHILDREN_2.toString());}
+					if (CustomItemManager.debugMode) {sender.sendMessage(CustomItemManager.pluginBC + " DEBUG: Command " + runCmd.inputName + " has children commands!");}
 					boolean found = false;
 					int argsFrom = 0;
 					
 					List<CommandCIM> children = getCom[i].children;
 					for (int a = 0; a < finArgs.size() && !found; a++) {
-						if (CustomItemManager.debugMode) {plugin.getLogger().info(Lang.DEB_CHECKARG.toString() + "(" + finArgs.get(a) + ")");}
+						if (CustomItemManager.debugMode) {sender.sendMessage(CustomItemManager.pluginBC + " DEBUG: Checking argument (" + finArgs.get(a) + ")");}
 						
 						boolean childFound = false;
 						for (int c = 0; c < children.size() && !childFound; c++) {
-							if (CustomItemManager.debugMode) {plugin.getLogger().info(Lang.DEB_CHECKCHILDREN.toString() + "(" + children.get(c).inputName + ")");}
+							if (CustomItemManager.debugMode) {sender.sendMessage(CustomItemManager.pluginBC + " DEBUG: Checking children: (" + children.get(c).inputName + ")");}
 							if (children.get(c).inputName.equalsIgnoreCase(finArgs.get(a))) {
 								childFound = true;
-								if (CustomItemManager.debugMode) {plugin.getLogger().info(Lang.DEB_MATCHFOUND.toString());}
+								if (CustomItemManager.debugMode) {sender.sendMessage(CustomItemManager.pluginBC + " DEBUG: Match found!");}
 								if (children.get(c).canChildren && children.get(c).children.size() != 0) {
-									if (CustomItemManager.debugMode) {plugin.getLogger().info(Lang.DEB_GRANDCHILDREN.toString());}
+									if (CustomItemManager.debugMode) {sender.sendMessage(CustomItemManager.pluginBC + " DEBUG: Child has children, running through.");}
 									children = children.get(c).children;
 								} else {
 									found = true;
-									if (CustomItemManager.debugMode) {plugin.getLogger().info(Lang.DEB_FINALCOMMAND.toString());}
+									if (CustomItemManager.debugMode) {sender.sendMessage(CustomItemManager.pluginBC + " DEBUG: Final command found, setting argument placeholder.");}
 									runCmd = children.get(c);
-									if (CustomItemManager.debugMode) {plugin.getLogger().info(Lang.DEB_RUNCMDCHANGE.toString() + runCmd.inputName);}
+									if (CustomItemManager.debugMode) {sender.sendMessage(CustomItemManager.pluginBC + " DEBUG: runCmd is now " + runCmd.inputName);}
 									argsFrom = a + 1;
 								}
 							}
 						}
 					}
 					
-					if (CustomItemManager.debugMode) {plugin.getLogger().info(Lang.DEB_ARGNUM.toString() + Integer.toString(finArgs.size()) + Lang.DEB_REMARGNUM.toString() + Integer.toString(argsFrom));}
+					if (CustomItemManager.debugMode) {sender.sendMessage(CustomItemManager.pluginBC + " DEBUG: Num of arguments: " + Integer.toString(finArgs.size()) + ". Num of arguments to remove: " + Integer.toString(argsFrom));}
 					if (argsFrom != 0) {
 						for (int d = 0; d < argsFrom; d++) {
-							if (CustomItemManager.debugMode) {plugin.getLogger().info(Lang.DEB_REMARG.toString() + "(" + Integer.toString(d) + ") " + finArgs.get(0));}
+							if (CustomItemManager.debugMode) {sender.sendMessage(CustomItemManager.pluginBC + " DEBUG: Removed argument (" + Integer.toString(d) + ") " + finArgs.get(0));}
 							finArgs.remove(0);
 						}
 						if (CustomItemManager.debugMode) {
-							plugin.getLogger().info(Lang.DEB_POSTREMARGLIST.toString());
+							sender.sendMessage(CustomItemManager.pluginBC + " DEBUG: Remaining arguments:");
 							for (int a = 0; a < finArgs.size(); a++) {
-								plugin.getLogger().info(Lang.DEB_ARGPOST.toString() + "(" + Integer.toString(a) + ") " + finArgs.get(a));
+								sender.sendMessage(CustomItemManager.pluginBC + " DEBUG: Arg (" + Integer.toString(a) + ") " + finArgs.get(a));
 							}
 						}
 					}
@@ -79,10 +79,10 @@ public class CommandExec implements CommandExecutor {
 						if (player.hasPermission(runCmd.permNode) || runCmd.permNode == "default") {
 							commandHandle(runCmd.outputID, finArgs, sender);
 						} else {
-							sender.sendMessage(Lang.TITLE.toString() + Lang.ERR_NOPERM_1.toString() + runCmd.permNode + Lang.ERR_NOPERM_2.toString());
+							sender.sendMessage(CustomItemManager.pluginBC + "ERR: You need the perm node " + runCmd.permNode + " to run that command. Contact an admin if you think you should have this.");
 						}
 					} else {
-						sender.sendMessage(Lang.TITLE.toString() + Lang.ERR_PLAYERONLY.toString());
+						sender.sendMessage(CustomItemManager.pluginBC + "ERR: Command needs to be run as player!");
 					}
 				} else {
 					commandHandle(runCmd.outputID, finArgs, sender);
@@ -97,9 +97,9 @@ public class CommandExec implements CommandExecutor {
 		boolean hasRun = true;
 		
 		if (args.size() < CustomItemManager.commands.get(id).reqParams) {     //Checks if command has correct amount of arguments, between the required and max. (Can allow for optional arguments)
-			sender.sendMessage(Lang.TITLE.toString() + Lang.ERR_NEGARG.toString() + Integer.toString(args.size()) + "/" + Integer.toString(CustomItemManager.commands.get(id).reqParams));
+			sender.sendMessage(CustomItemManager.pluginBC + " ERR: Not enough arguments! " + Integer.toString(args.size()) + "/" + Integer.toString(CustomItemManager.commands.get(id).reqParams) + "!\n");
 		} else if (args.size() > CustomItemManager.commands.get(id).maxParams && !CustomItemManager.commands.get(id).noMaxParams) {
-			sender.sendMessage(Lang.TITLE.toString() + Lang.ERR_POSARG.toString() + Integer.toString(args.size()) + "/" + Integer.toString(CustomItemManager.commands.get(id).maxParams));
+			sender.sendMessage(CustomItemManager.pluginBC + " ERR: Too many arguments! " + Integer.toString(args.size()) + "/" + Integer.toString(CustomItemManager.commands.get(id).maxParams) + "!\n");
 		} else {
 			if (id == 0) {
 				sender.sendMessage("DEFAULT COMMAND.");
@@ -140,7 +140,7 @@ public class CommandExec implements CommandExecutor {
 		}
 		
 		if (!hasRun) {
-			sender.sendMessage(Lang.TITLE.toString() + Lang.ERR_NOCOMMAND.toString() + "(" + Integer.toString(id) + ")");
+			sender.sendMessage(CustomItemManager.pluginBC + " ERR: No command found! (" + Integer.toString(id) + ")");
 		}
 	}
 }

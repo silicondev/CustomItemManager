@@ -7,23 +7,24 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class CustomItemManager extends JavaPlugin {
 	public static String pluginName = "CustomItemManager";
-	public static String pluginBC = "[" + pluginName + "]";
 	public static boolean debugMode = false;
-	public static String version = "inDev 0.0.2";
+	public static String version = "inDev 0.0.5";
 	private FileConfiguration itemConfig;
 	private FileConfiguration idConfig;
+	public static YamlConfiguration langConfig;
 	private File itemFile = new File(getDataFolder(), "items.yml");
 	private File idFile = new File(getDataFolder(), "ids.yml");
+	private static File langFile;
 	
-	static CommandOut comOut = new CommandOut(pluginBC);
+	static CommandOut comOut = new CommandOut();
 	static List<CommandCIM> commands = new ArrayList<CommandCIM>();
 	
 	static List<CustomItem> savedItems = new ArrayList<CustomItem>();
@@ -73,6 +74,7 @@ public class CustomItemManager extends JavaPlugin {
 		}
 		
 		errNum += load();
+		loadLang();
 		
 		getLogger().info("Initialization complete with " + Integer.toString(errNum) + " errors.");
 		
@@ -188,5 +190,59 @@ public class CustomItemManager extends JavaPlugin {
 		}
 		
 		return errNum;
+	}
+	
+	public void loadLang() {
+		
+		File lang = new File(getDataFolder(), "lang.yml");
+	    if (!lang.exists()) {
+	        try {
+	            getDataFolder().mkdir();
+	            lang.createNewFile();
+	            URL url = this.getClass().getResource("lang.yml");
+	            if (url != null) {
+	            	try {
+	            		YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(new File(url.toURI()));
+	            		defConfig.save(lang);
+		                Lang.setFile(defConfig);
+		                //return defConfig; //FIX THIS
+	            	} catch (URISyntaxException u) {
+	            		u.printStackTrace();
+	            		getLogger().warning("Couldn't create language file.");
+	    	            getLogger().warning("This is a fatal error. Now disabling.");
+	    	            this.setEnabled(false); // Without it loaded, we can't send them messages
+	            	}
+	            }
+	        } catch(IOException e) {
+	            e.printStackTrace(); // So they notice
+	            getLogger().warning("Couldn't create language file.");
+	            getLogger().warning("This is a fatal error. Now disabling.");
+	            this.setEnabled(false); // Without it loaded, we can't send them messages
+	        }
+	    }
+	    YamlConfiguration conf = YamlConfiguration.loadConfiguration(lang);
+	    for(Lang item:Lang.values()) {
+	        if (conf.getString(item.getPath()) == null) {
+	            conf.set(item.getPath(), item.getDefault());
+	        }
+	    }
+	    Lang.setFile(conf);
+	    CustomItemManager.langConfig = conf;
+	    CustomItemManager.langFile = lang;
+	    try {
+	        conf.save(getLangFile());
+	    } catch(IOException e) {
+	    	getLogger().warning("Failed to save lang.yml.");
+	    	getLogger().warning("Report this stack trace to <your name>.");
+	        e.printStackTrace();
+	    }
+	}
+	
+	public YamlConfiguration getLang() {
+	    return langConfig;
+	}
+	
+	public File getLangFile() {
+		return langFile;
 	}
 }

@@ -3,7 +3,7 @@
   
   <groupId>io.github.silicondev</groupId>
   <artifactId>CustomItemManager</artifactId>
-  <version>0.0.3-SNAPSHOT</version>
+  <version>0.0.5-SNAPSHOT</version>
   
   <repositories>
         <repository>
@@ -33,6 +33,7 @@
     				<include>plugin.yml</include>
     				<include>items.yml</include>
     				<include>ids.yml</include>
+    				<include>lang.yml</include>
     			</includes>
     		</resource>
     	</resources>

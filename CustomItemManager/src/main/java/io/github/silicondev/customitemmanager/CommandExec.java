@@ -102,7 +102,7 @@ public class CommandExec implements CommandExecutor {
 			sender.sendMessage(Lang.TITLE.toString() + Lang.ERR_POSARG.toString() + Integer.toString(args.size()) + "/" + Integer.toString(CustomItemManager.commands.get(id).maxParams));
 		} else {
 			if (id == 0) {
-				sender.sendMessage("DEFAULT COMMAND.");
+				//sender.sendMessage("DEFAULT COMMAND.");
 				if (args.size() > 0) {
 					plugin.comOut.help(sender, true, args.get(0));
 				} else {

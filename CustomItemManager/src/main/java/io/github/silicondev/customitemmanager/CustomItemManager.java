@@ -5,7 +5,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.yaml.snakeyaml.DumperOptions;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,8 +13,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import javax.security.auth.login.Configuration;
 
 public class CustomItemManager extends JavaPlugin {
 	public static String pluginName = "CustomItemManager";

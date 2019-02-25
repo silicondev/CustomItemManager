@@ -13,6 +13,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.security.auth.login.Configuration;
 
@@ -103,13 +104,41 @@ public class CustomItemManager extends JavaPlugin {
 	public void save() {
 		
 		if (itemFile.exists()) {
+			getLogger().info("Existing item file found! Deleting...");
 			itemFile.delete();
-			saveResource("items.yml", false);
+			getLogger().info("Item file deleted! Saving blank file...");
+			try {
+				itemFile.createNewFile();
+				getLogger().info("Blank file saved and ready for editing!");
+			} catch (IOException e) {
+				getLogger().info("ERR: Error creatine new file!");
+				e.printStackTrace();
+			}
+			//saveResource("items.yml", false);
 		}
 		
 		if (idFile.exists()) {
+			getLogger().info("Existing id file found! Deleting...");
 			idFile.delete();
-			saveResource("ids.yml", false);
+			getLogger().info("Id file deleted! Saving blank file...");
+			try {
+				itemFile.createNewFile();
+				getLogger().info("Blank file saved and ready for editing!");
+			} catch (IOException e) {
+				getLogger().info("ERR: Error creatine new file!");
+				e.printStackTrace();
+			}
+			//saveResource("ids.yml", false);
+		}
+		
+		Map<String, Object> itemConfigVals = itemConfig.getValues(false);
+		Map<String, Object> idConfigVals = idConfig.getValues(false);
+		
+		for (Map.Entry<String, Object> entry : itemConfigVals.entrySet()) {
+			itemConfig.set(entry.getKey(), null);
+		}
+		for (Map.Entry<String, Object> entry : idConfigVals.entrySet()) {
+			idConfig.set(entry.getKey(), null);
 		}
 		
 		for (int i = 0; i < savedItems.size(); i++) {

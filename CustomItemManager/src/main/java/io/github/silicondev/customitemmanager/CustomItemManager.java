@@ -5,6 +5,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.yaml.snakeyaml.DumperOptions;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,9 +14,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.security.auth.login.Configuration;
+
 public class CustomItemManager extends JavaPlugin {
 	public static String pluginName = "CustomItemManager";
-	public static boolean debugMode = false;
+	public boolean debugMode = true;
 	public static String version = "Beta 0.1.0";
 	private FileConfiguration itemConfig;
 	private FileConfiguration idConfig;
@@ -24,7 +27,7 @@ public class CustomItemManager extends JavaPlugin {
 	private File idFile = new File(getDataFolder(), "ids.yml");
 	private static File langFile;
 	
-	static CommandOut comOut = new CommandOut();
+	CommandOut comOut = new CommandOut(this);
 	static List<CommandCIM> commands = new ArrayList<CommandCIM>();
 	
 	static List<CustomItem> savedItems = new ArrayList<CustomItem>();
@@ -98,6 +101,17 @@ public class CustomItemManager extends JavaPlugin {
 	}
 	
 	public void save() {
+		
+		if (itemFile.exists()) {
+			itemFile.delete();
+			saveResource("items.yml", false);
+		}
+		
+		if (idFile.exists()) {
+			idFile.delete();
+			saveResource("ids.yml", false);
+		}
+		
 		for (int i = 0; i < savedItems.size(); i++) {
 			getLogger().info("Saving id: (" + Integer.toString(i) + ") " + savedItems.get(i).id); 
 			idConfig.set(Integer.toString(i), savedItems.get(i).id);

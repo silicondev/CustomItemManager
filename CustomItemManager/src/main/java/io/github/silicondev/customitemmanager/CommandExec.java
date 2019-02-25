@@ -27,44 +27,44 @@ public class CommandExec implements CommandExecutor {
 				List<String> finArgs = new ArrayList<String>(Arrays.asList(args));
 				
 				CommandCIM runCmd = getCom[i];
-				if (CustomItemManager.debugMode) {plugin.getLogger().info(Lang.DEB_COMMANDFOUND.toString() + runCmd.inputName);}
+				if (plugin.debugMode) {plugin.getLogger().info(Lang.DEB_COMMANDFOUND.toString() + runCmd.inputName);}
 				
 				if (getCom[i].canChildren && getCom[i].children.size() != 0) {
-					if (CustomItemManager.debugMode) {plugin.getLogger().info(Lang.DEB_COMMANDCHILDREN_1.toString() + runCmd.inputName + Lang.DEB_COMMANDCHILDREN_2.toString());}
+					if (plugin.debugMode) {plugin.getLogger().info(Lang.DEB_COMMANDCHILDREN_1.toString() + runCmd.inputName + Lang.DEB_COMMANDCHILDREN_2.toString());}
 					boolean found = false;
 					int argsFrom = 0;
 					
 					List<CommandCIM> children = getCom[i].children;
 					for (int a = 0; a < finArgs.size() && !found; a++) {
-						if (CustomItemManager.debugMode) {plugin.getLogger().info(Lang.DEB_CHECKARG.toString() + "(" + finArgs.get(a) + ")");}
+						if (plugin.debugMode) {plugin.getLogger().info(Lang.DEB_CHECKARG.toString() + "(" + finArgs.get(a) + ")");}
 						
 						boolean childFound = false;
 						for (int c = 0; c < children.size() && !childFound; c++) {
-							if (CustomItemManager.debugMode) {plugin.getLogger().info(Lang.DEB_CHECKCHILDREN.toString() + "(" + children.get(c).inputName + ")");}
+							if (plugin.debugMode) {plugin.getLogger().info(Lang.DEB_CHECKCHILDREN.toString() + "(" + children.get(c).inputName + ")");}
 							if (children.get(c).inputName.equalsIgnoreCase(finArgs.get(a))) {
 								childFound = true;
-								if (CustomItemManager.debugMode) {plugin.getLogger().info(Lang.DEB_MATCHFOUND.toString());}
+								if (plugin.debugMode) {plugin.getLogger().info(Lang.DEB_MATCHFOUND.toString());}
 								if (children.get(c).canChildren && children.get(c).children.size() != 0) {
-									if (CustomItemManager.debugMode) {plugin.getLogger().info(Lang.DEB_GRANDCHILDREN.toString());}
+									if (plugin.debugMode) {plugin.getLogger().info(Lang.DEB_GRANDCHILDREN.toString());}
 									children = children.get(c).children;
 								} else {
 									found = true;
-									if (CustomItemManager.debugMode) {plugin.getLogger().info(Lang.DEB_FINALCOMMAND.toString());}
+									if (plugin.debugMode) {plugin.getLogger().info(Lang.DEB_FINALCOMMAND.toString());}
 									runCmd = children.get(c);
-									if (CustomItemManager.debugMode) {plugin.getLogger().info(Lang.DEB_RUNCMDCHANGE.toString() + runCmd.inputName);}
+									if (plugin.debugMode) {plugin.getLogger().info(Lang.DEB_RUNCMDCHANGE.toString() + runCmd.inputName);}
 									argsFrom = a + 1;
 								}
 							}
 						}
 					}
 					
-					if (CustomItemManager.debugMode) {plugin.getLogger().info(Lang.DEB_ARGNUM.toString() + Integer.toString(finArgs.size()) + Lang.DEB_REMARGNUM.toString() + Integer.toString(argsFrom));}
+					if (plugin.debugMode) {plugin.getLogger().info(Lang.DEB_ARGNUM.toString() + Integer.toString(finArgs.size()) + Lang.DEB_REMARGNUM.toString() + Integer.toString(argsFrom));}
 					if (argsFrom != 0) {
 						for (int d = 0; d < argsFrom; d++) {
-							if (CustomItemManager.debugMode) {plugin.getLogger().info(Lang.DEB_REMARG.toString() + "(" + Integer.toString(d) + ") " + finArgs.get(0));}
+							if (plugin.debugMode) {plugin.getLogger().info(Lang.DEB_REMARG.toString() + "(" + Integer.toString(d) + ") " + finArgs.get(0));}
 							finArgs.remove(0);
 						}
-						if (CustomItemManager.debugMode) {
+						if (plugin.debugMode) {
 							plugin.getLogger().info(Lang.DEB_POSTREMARGLIST.toString());
 							for (int a = 0; a < finArgs.size(); a++) {
 								plugin.getLogger().info(Lang.DEB_ARGPOST.toString() + "(" + Integer.toString(a) + ") " + finArgs.get(a));
@@ -104,34 +104,34 @@ public class CommandExec implements CommandExecutor {
 			if (id == 0) {
 				sender.sendMessage("DEFAULT COMMAND.");
 				if (args.size() > 0) {
-					CustomItemManager.comOut.help(sender, true, args.get(0));
+					plugin.comOut.help(sender, true, args.get(0));
 				} else {
-					CustomItemManager.comOut.help(sender, false, null);
+					plugin.comOut.help(sender, false, null);
 				}
 			} else if (id == 1) {
 				if (args.size() > 0) {
 					for (int i = 0; i < args.size(); i++) {
-						CustomItemManager.comOut.test(sender, true, args.get(i));
+						plugin.comOut.test(sender, true, args.get(i));
 					}
 				} else {
-					CustomItemManager.comOut.test(sender, false, null);
+					plugin.comOut.test(sender, false, null);
 				}
 			} else if (id == 2) {
 				if (args.size() > 0) {
-					CustomItemManager.comOut.help(sender, true, args.get(0));
+					plugin.comOut.help(sender, true, args.get(0));
 				} else {
-					CustomItemManager.comOut.help(sender, false, null);
+					plugin.comOut.help(sender, false, null);
 				}
 			} else if (id == 3) {
 				
 			} else if (id == 4) {
-				CustomItemManager.comOut.addItem(sender, args.get(0));
+				plugin.comOut.addItem(sender, args.get(0));
 			} else if (id == 5) {
-				CustomItemManager.comOut.spawnItem(sender, args.get(0));
+				plugin.comOut.spawnItem(sender, args.get(0));
 			} else if (id == 6) {
-				CustomItemManager.comOut.deleteItem(sender, args.get(0));
+				plugin.comOut.deleteItem(sender, args.get(0));
 			} else if (id == 7) {
-				CustomItemManager.comOut.listItems(sender);
+				plugin.comOut.listItems(sender);
 			} else if (id == 8) {
 				plugin.save();
 			} else {

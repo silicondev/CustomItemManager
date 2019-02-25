@@ -3,15 +3,19 @@ package io.github.silicondev.customitemmanager;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class CommandOut {
 	
-	public CommandOut() {
-		
+	CustomItemManager plugin;
+	
+	public CommandOut(CustomItemManager plugin) {
+		this.plugin = plugin;
 	}
 	
 	public void test(CommandSender sender, boolean hasArgs, String arg) {
@@ -61,23 +65,34 @@ public class CommandOut {
 	}
 	
 	public void addItem(CommandSender sender, String id) {
-		Player player = (Player)sender;
-		ItemStack item = player.getInventory().getItemInMainHand();
-		ItemMeta meta = item.getItemMeta();
-		List<String> lore = new ArrayList<String>();
-		if (meta.hasLore()) {
-			lore = meta.getLore();
+		boolean found = false;
+		for (int i = 0; i < CustomItemManager.savedItems.size() && !found; i++) {
+			if (id.equalsIgnoreCase(CustomItemManager.savedItems.get(i).id)) {
+				found = true;
+			}
 		}
-		lore.add(id);
-		meta.setLore(lore);
-		item.setItemMeta(meta);
 		
-		CustomItem ci = new CustomItem();
-		ci.setId(id);
-		ci.setItem(item);
-		CustomItemManager.savedItems.add(ci);
-		player.getInventory().setItemInMainHand(item);
-		sender.sendMessage(Lang.TITLE.toString() + Lang.ITEM_SAVED.toString());
+		if (found) {
+			sender.sendMessage(Lang.TITLE.toString() + Lang.ERR_ITEM_EXISTS.toString());
+		} else {
+			Player player = (Player)sender;
+			ItemStack item = player.getInventory().getItemInMainHand();
+			ItemMeta meta = item.getItemMeta();
+			List<String> lore = new ArrayList<String>();
+			if (meta.hasLore()) {
+				lore = meta.getLore();
+			}
+			lore.add(String.valueOf(ChatColor.translateAlternateColorCodes('&', Lang.ITEM_LORE_PREFIX + id)));
+			meta.setLore(lore);
+			item.setItemMeta(meta);
+			
+			CustomItem ci = new CustomItem();
+			ci.setId(id);
+			ci.setItem(item);
+			CustomItemManager.savedItems.add(ci);
+			player.getInventory().setItemInMainHand(item);
+			sender.sendMessage(Lang.TITLE.toString() + Lang.ITEM_SAVED.toString());
+		}
 	}
 	
 	public void listItems(CommandSender sender) {
@@ -90,7 +105,7 @@ public class CommandOut {
 			} else {
 				itemName = ci.getItem().getType().name();
 			}
-			sender.sendMessage(Lang.TITLE.toString() + itemName +" (" + ci.getId() + ")");
+			sender.sendMessage(String.valueOf(ChatColor.translateAlternateColorCodes('&', Lang.TITLE.toString() + itemName + "&r (" + ci.getId() + ")")));
 		}
 		sender.sendMessage(Lang.ITEM_LIST_FOOTER.toString());
 	}
@@ -112,10 +127,45 @@ public class CommandOut {
 	
 	public void deleteItem(CommandSender sender, String id) {
 		boolean found = false;
-		for (int i = 0; i < CustomItemManager.savedItems.size(); i++) {
+		for (int i = 0; i < CustomItemManager.savedItems.size() && !found; i++) {
 			if (id.equals(CustomItemManager.savedItems.get(i).getId())) {
 				found = true;
 				CustomItemManager.savedItems.remove(i);
+				
+				if (sender instanceof Player) {
+					
+					Player player = (Player)sender;
+					
+					PlayerInventory inv = player.getInventory();
+					
+					ItemStack[] items = inv.getContents();
+					for (int item = 0; item < items.length; item++) {
+						if (plugin.debugMode) {plugin.getLogger().info("DEBUG: Testing item: " + Integer.toString(item));}
+						ItemStack currentItem = items[item];
+						if (currentItem != null) {
+							if (currentItem.hasItemMeta()) {
+								ItemMeta meta = currentItem.getItemMeta();
+								if (meta.hasLore()) {
+									if (plugin.debugMode) {plugin.getLogger().info("DEBUG: Item has lore.");}
+									List<String> lore = meta.getLore();
+									for (int loreNum = 0; loreNum < lore.size(); loreNum++) {
+										if (plugin.debugMode) {plugin.getLogger().info("DEBUG: Testing lore line " + Integer.toString(loreNum) + ": " + lore.get(loreNum) + " contains " + id + "?");}
+										if (String.valueOf(lore.get(loreNum)).contains(id)) {
+											if (plugin.debugMode) {plugin.getLogger().info("DEBUG: Lore matches ID");}
+											lore.remove(loreNum);
+											if (plugin.debugMode) {plugin.getLogger().info("DEBUG: Lore removed.");}
+										}
+									}
+									meta.setLore(lore);
+									items[item].setItemMeta(meta);
+									player.getInventory().setContents(items);
+									if (plugin.debugMode) {plugin.getLogger().info("DEBUG: Changed inventory.");}
+								}
+							}
+						}
+					}
+				}
+				
 				sender.sendMessage(Lang.TITLE.toString() + Lang.ITEM_DELETED.toString());
 			}
 		}

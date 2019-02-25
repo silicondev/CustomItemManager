@@ -16,6 +16,7 @@ public enum Lang {
 	ITEM_LIST_FOOTER("item-list-footer", "========="),
 	ITEM_SPAWNED("item-spawned", "Item spawned!"),
 	ITEM_DELETED("item-deleted", "Item removed!"),
+	ITEM_LORE_PREFIX("item-lore-prefix", "&8"),
 	/*ERRORS*/
 	ERR_NOPERM_1("err-noperm-1", "ERR: You need the perm node "),
 	ERR_NOPERM_2("err-noperm-2", " to run that command! Contact an admin if you think this is a mistake."),
@@ -24,6 +25,7 @@ public enum Lang {
 	ERR_POSARG("err-posarg", "ERR: Too many arguments: "),
 	ERR_NOCOMMAND("err-nocommand", "ERR: Unknown command!"),
 	ERR_NOITEM("err-noitem", "ERR: 404 Item not found!"),
+	ERR_ITEM_EXISTS("err-item-exists", "ERR: Item with that id already exists!"),
 	/*DEBUGS*/
 	DEB_COMMANDFOUND("deb-commandfound", "DEBUG: Command found: "),
 	DEB_COMMANDCHILDREN_1("deb-commandchildren-1", "DEBUG: Command "),

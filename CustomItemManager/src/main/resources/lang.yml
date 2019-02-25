@@ -1,4 +1,4 @@
-# Use & for colour codes and %p for player names
+# Use & for colour codes
 plugin-name: "&f[&eCustomItemManager&f] &r"
 test-arg: "Test Command successful! Test arg: "
 test-noarg: "Test command successful with no arguments!"
@@ -10,6 +10,7 @@ item-list-title: "All items:"
 item-list-footer: "========="
 item-spawned: "Item spawned!"
 item-deleted: "Item removed!"
+item-lore-prefix: "&8"
 #ERRORS
 err-noperm-1: "ERR: You need the perm node "
 err-noperm-2: " to run that command! Contact an admin if you think this is a mistake."
@@ -18,6 +19,7 @@ err-negarg: "ERR: Not enough arguments: "
 err-posarg: "ERR: Too many arguments: "
 err-nocommand: "ERR: Unknown command!"
 err-noitem: "ERR: 404 Item not found!"
+err-item-exists: "ERR: Item with that id already exists!"
 #DEBUGS
 deb-commandfound: "DEBUG: Command found: "
 deb-commandchildren-1: "DEBUG: Command "

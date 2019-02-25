@@ -3,7 +3,7 @@ A Minecraft Plugin that allows admins to save custom made items, including all M
 and spawn them back in at will.
 Perfect for RPG servers.
 
-Download/Bug Reporting: <PENDING>
+Download/Bug Reporting: `PENDING`
 
 ## Commands
 

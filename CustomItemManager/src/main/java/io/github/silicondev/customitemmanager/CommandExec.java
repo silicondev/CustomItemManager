@@ -73,6 +73,8 @@ public class CommandExec implements CommandExecutor {
 					}
 				}
 				
+				
+				
 				if (runCmd.playerOnly) {
 					if (sender instanceof Player) {
 						Player player = (Player) sender;
@@ -85,7 +87,14 @@ public class CommandExec implements CommandExecutor {
 						sender.sendMessage(Lang.TITLE.toString() + Lang.ERR_PLAYERONLY.toString());
 					}
 				} else {
-					commandHandle(runCmd.outputID, finArgs, sender);
+					if (sender instanceof Player) {
+						Player player = (Player) sender;
+						if (player.hasPermission(runCmd.permNode) || runCmd.permNode == "default") {
+							commandHandle(runCmd.outputID, finArgs, sender);
+						} else {
+							sender.sendMessage(Lang.TITLE.toString() + Lang.ERR_NOPERM_1.toString() + runCmd.permNode + Lang.ERR_NOPERM_2.toString());
+						}
+					}
 				}
 				return true;
 			}

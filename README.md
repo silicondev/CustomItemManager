@@ -35,5 +35,31 @@ Lists all custom items in the database.
 
 Manually saves all items to the database. Automatically happens on server shutdown/restart.
 
+## Alias: 
+/ci >> /customitem (eg. /ci item set instead of /customitem item set)
+
+## Permissions:
+
+> customitemmanager.*
+Permission for all commands.
+
+> customitemmanager.help
+Permission to use /customitem help.
+
+> customitemmanager.item.set
+Permission to use /customitem item set.
+
+> customitemmanager.item.spawn
+Permission to use/customitem item spawn.
+
+> customitemmanager.item.delete
+Permission to use /customitem item delete.
+
+> customitemmanager.item.list
+Permission to use /customitem item list.
+
+> customitemmanager.save
+Permission to use /customitem save.
+
 ## End of file.
 Updated: 25/02/2019

@@ -143,6 +143,12 @@ public class CommandExec implements CommandExecutor {
 				plugin.comOut.listItems(sender);
 			} else if (id == 8) {
 				plugin.save();
+			} else if (id == 9) {
+				plugin.comOut.addCommand(sender, args.get(0), args.get(1));
+			} else if (id == 10) {
+				plugin.comOut.removeCommand(sender, args.get(0), args.get(1));
+			} else if (id == 11) {
+				plugin.comOut.clearCommands(sender, args.get(0));
 			} else {
 				hasRun = false;
 			}

@@ -69,6 +69,18 @@ public class CustomItemManager extends JavaPlugin {
 			commands.add(new CommandCIM("save", 0, 0, false, false, true, 8, "customitemmanager.save", "Saves all data to configs."));
 			commands.set(8, addParent(commands.get(8), commands.get(0)));
 			commands.set(0, addChild(commands.get(0), commands.get(8)));
+			
+			commands.add(new CommandCIM("addcommand", 2, 0, false, false, true, 9, "customitemmanager.command.add", "Adds a runnable command to the item. Usage: /customitem item addcommand <id> <command (without slash)>"));
+			commands.set(9, addParent(commands.get(9), commands.get(3)));
+			commands.set(3, addChild(commands.get(3), commands.get(9)));
+			
+			commands.add(new CommandCIM("removecommand", 2, 0, false, false, true, 10, "customitemmanager.command.remove", "Removes a command from the item. Usage: /customitem item removecommand <id> <command (without slash)>"));
+			commands.set(9, addParent(commands.get(10), commands.get(3)));
+			commands.set(3, addChild(commands.get(3), commands.get(10)));
+			
+			commands.add(new CommandCIM("clearcommands", 2, 0, false, false, true, 11, "customitemmanager.command.clear", "Clears all commands from the item. Usage: /customitem item clearcommands <id>"));
+			commands.set(9, addParent(commands.get(11), commands.get(3)));
+			commands.set(3, addChild(commands.get(3), commands.get(11)));
 		} catch(NullPointerException e) {
 			errNum++;
 			getLogger().info("Error loading commands!");

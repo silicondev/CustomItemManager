@@ -16,6 +16,11 @@ public enum Lang {
 	ITEM_LIST_FOOTER("item-list-footer", "========="),
 	ITEM_SPAWNED("item-spawned", "Item spawned!"),
 	ITEM_DELETED("item-deleted", "Item removed!"),
+	ITEM_COMMAND_HEADER("item-command-header", "Command {"),
+	ITEM_COMMANDADDED("item-commandadded", "} has been added to the item "),
+	ITEM_COMMANDREMOVED("item-commandremoved", "} has been removed from the item "),
+	ITEM_COMMAND_FOOTER("item-commandadded-footer", "!"),
+	ITEM_COMMANDSCLEARED("item-commandscleared", "All commands have been removed from the item "),
 	ITEM_LORE_PREFIX("item-lore-prefix", "&8"),
 	/*ERRORS*/
 	ERR_NOPERM_1("err-noperm-1", "ERR: You need the perm node "),

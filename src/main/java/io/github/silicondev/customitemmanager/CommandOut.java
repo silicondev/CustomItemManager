@@ -173,4 +173,53 @@ public class CommandOut {
 			sender.sendMessage(Lang.TITLE.toString() + Lang.ERR_NOITEM.toString());
 		}
 	}
+	
+	public void addCommand(CommandSender sender, String id, String cmd) {
+		List<CustomItem> items = CustomItemManager.savedItems;
+		boolean found = false;
+		int idFound = 0;
+		for (int i = 0; i < items.size() && !found; i++) {
+			if (items.get(i).id.equalsIgnoreCase(id)) {
+				idFound = i;
+				found = true;
+				items.get(i).addCommand(cmd);
+			}
+		}
+		if (!found) {
+			sender.sendMessage(Lang.HELP_TITLE.toString() + Lang.ERR_NOITEM.toString());
+		} else {
+			CustomItemManager.savedItems = items;
+			sender.sendMessage(Lang.TITLE.toString() + Lang.ITEM_COMMAND_HEADER.toString() + cmd + Lang.ITEM_COMMANDADDED.toString() + items.get(idFound).item.getItemMeta().getDisplayName() + Lang.ITEM_COMMAND_FOOTER.toString());
+		}
+	}
+	
+	public void removeCommand(CommandSender sender, String id, String cmd) {
+		List<CustomItem> items = CustomItemManager.savedItems;
+		boolean found = false;
+		for (int i = 0; i < items.size() && !found; i++) {
+			if (items.get(i).id.equalsIgnoreCase(id)) {
+				if (!items.get(i).removeCommand(cmd)) {
+					sender.sendMessage(Lang.HELP_TITLE.toString() + Lang.ERR_NOITEM.toString());
+					break;
+				} else {
+					found = true;
+					sender.sendMessage(Lang.TITLE.toString() + Lang.ITEM_COMMAND_HEADER.toString() + cmd + Lang.ITEM_COMMANDREMOVED.toString() + items.get(i).item.getItemMeta().getDisplayName() + Lang.ITEM_COMMAND_FOOTER.toString());
+				}
+			}
+		}
+		CustomItemManager.savedItems = items;
+	}
+	
+	public void clearCommands(CommandSender sender, String id) {
+		List<CustomItem> items = CustomItemManager.savedItems;
+		boolean found = false;
+		for (int i = 0; i < items.size() && !found; i++) {
+			if (items.get(i).id.equalsIgnoreCase(id)) {
+				found = true;
+				items.get(i).clearCommands();
+				sender.sendMessage(Lang.TITLE.toString() + Lang.ITEM_COMMANDSCLEARED.toString() + items.get(i).item.getItemMeta().getDisplayName() + Lang.ITEM_COMMAND_FOOTER.toString());
+			}
+		}
+		CustomItemManager.savedItems = items;
+	}
 }

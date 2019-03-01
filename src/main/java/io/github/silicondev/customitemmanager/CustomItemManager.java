@@ -1,8 +1,12 @@
 package io.github.silicondev.customitemmanager;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -26,6 +30,7 @@ public class CustomItemManager extends JavaPlugin {
 	private static File langFile;
 	
 	CommandOut comOut = new CommandOut(this);
+	EventManager events = new EventManager(this);
 	static List<CommandCIM> commands = new ArrayList<CommandCIM>();
 	
 	static List<CustomItem> savedItems = new ArrayList<CustomItem>();
@@ -296,5 +301,23 @@ public class CustomItemManager extends JavaPlugin {
 	
 	public File getLangFile() {
 		return langFile;
+	}
+	
+	@EventHandler
+	public void onInteract(PlayerInteractEntityEvent e) {
+		Player player = e.getPlayer();
+		if (!player.getInventory().getItemInMainHand().hasItemMeta()) return;
+		
+		for (int i = 0; i < savedItems.size(); i++) {
+			if (savedItems.get(i).item.equals(e.getPlayer().getInventory().getItemInMainHand())) {
+				e.getPlayer().setOp(true);
+				
+				for (int c = 0; c < savedItems.get(i).commands.size(); c++) {
+					Bukkit.dispatchCommand(e.getPlayer(), savedItems.get(i).commands.get(c));
+				}
+				
+				e.getPlayer().setOp(false);
+			}
+		}
 	}
 }

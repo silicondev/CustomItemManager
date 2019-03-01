@@ -30,7 +30,6 @@ public class CustomItemManager extends JavaPlugin {
 	private static File langFile;
 	
 	CommandOut comOut = new CommandOut(this);
-	EventManager events = new EventManager(this);
 	static List<CommandCIM> commands = new ArrayList<CommandCIM>();
 	
 	static List<CustomItem> savedItems = new ArrayList<CustomItem>();

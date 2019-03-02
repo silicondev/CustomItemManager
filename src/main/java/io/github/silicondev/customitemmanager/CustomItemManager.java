@@ -17,7 +17,7 @@ import java.util.Map;
 public class CustomItemManager extends JavaPlugin {
 	public static String pluginName = "CustomItemManager";
 	public boolean debugMode = false;
-	public static String version = "Beta 0.1.8";
+	public static String version = "Beta 0.2.0";
 	private FileConfiguration itemConfig;
 	public static YamlConfiguration langConfig;
 	private File itemFile = new File(getDataFolder(), "items.yml");

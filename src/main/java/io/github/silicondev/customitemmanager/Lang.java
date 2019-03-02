@@ -13,6 +13,7 @@ public enum Lang {
 	HELP_COMMAND_HEADER("help-command-header", "> /"),
 	ITEM_SAVED("item-saved", "Item saved!"),
 	ITEM_LIST_TITLE("item-list-title", "All items:"),
+	ITEM_COMMAND_LIST_TITLE("item-command-list-title", "All commands:"),
 	ITEM_LIST_FOOTER("item-list-footer", "========="),
 	ITEM_SPAWNED("item-spawned", "Item spawned!"),
 	ITEM_DELETED("item-deleted", "Item removed!"),

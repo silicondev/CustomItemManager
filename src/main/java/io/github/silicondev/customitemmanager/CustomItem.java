@@ -51,4 +51,8 @@ public class CustomItem {
 	public void clearCommands() {
 		commands.clear();
 	}
+	
+	public void setCommands(List<String> cmds) {
+		commands = cmds;
+	}
 }

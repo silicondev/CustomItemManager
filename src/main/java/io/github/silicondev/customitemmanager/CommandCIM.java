@@ -32,6 +32,10 @@ public class CommandCIM {
 		canChildren = cchildren;
 		hasParent = hParent;
 		
-		maxParams = reqParams + optParams;     //Max arguments is the sum of optional and required arguments.
+		if (!noMaxParams) {
+			maxParams = reqParams + optParams;     //Max arguments is the sum of optional and required arguments.
+		} else {
+			maxParams = -1;
+		}
 	}
 }

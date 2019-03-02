@@ -1,12 +1,8 @@
 package io.github.silicondev.customitemmanager;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -21,12 +17,10 @@ import java.util.Map;
 public class CustomItemManager extends JavaPlugin {
 	public static String pluginName = "CustomItemManager";
 	public boolean debugMode = false;
-	public static String version = "Beta 0.1.0";
+	public static String version = "Beta 0.1.8";
 	private FileConfiguration itemConfig;
-	private FileConfiguration idConfig;
 	public static YamlConfiguration langConfig;
 	private File itemFile = new File(getDataFolder(), "items.yml");
-	private File idFile = new File(getDataFolder(), "ids.yml");
 	private static File langFile;
 	
 	CommandOut comOut = new CommandOut(this);
@@ -37,6 +31,9 @@ public class CustomItemManager extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		getLogger().info("Startup Initialized!");
+		
+		getServer().getPluginManager().registerEvents(new EventManager(), this);
+		
 		int errNum = 0;
 		try {
 			this.getCommand("customitem").setExecutor(new CommandExec(this));
@@ -74,17 +71,21 @@ public class CustomItemManager extends JavaPlugin {
 			commands.set(8, addParent(commands.get(8), commands.get(0)));
 			commands.set(0, addChild(commands.get(0), commands.get(8)));
 			
-			commands.add(new CommandCIM("addcommand", 2, 0, false, false, true, 9, "customitemmanager.command.add", "Adds a runnable command to the item. Usage: /customitem item addcommand <id> <command (without slash)>"));
+			commands.add(new CommandCIM("addcommand", 2, -1, false, false, true, 9, "customitemmanager.command.add", "Adds a runnable command to the item. Usage: /customitem item addcommand <id> <command (without slash)>"));
 			commands.set(9, addParent(commands.get(9), commands.get(3)));
 			commands.set(3, addChild(commands.get(3), commands.get(9)));
 			
-			commands.add(new CommandCIM("removecommand", 2, 0, false, false, true, 10, "customitemmanager.command.remove", "Removes a command from the item. Usage: /customitem item removecommand <id> <command (without slash)>"));
-			commands.set(9, addParent(commands.get(10), commands.get(3)));
+			commands.add(new CommandCIM("removecommand", 2, -1, false, false, true, 10, "customitemmanager.command.remove", "Removes a command from the item. Usage: /customitem item removecommand <id> <command (without slash)>"));
+			commands.set(10, addParent(commands.get(10), commands.get(3)));
 			commands.set(3, addChild(commands.get(3), commands.get(10)));
 			
-			commands.add(new CommandCIM("clearcommands", 2, 0, false, false, true, 11, "customitemmanager.command.clear", "Clears all commands from the item. Usage: /customitem item clearcommands <id>"));
-			commands.set(9, addParent(commands.get(11), commands.get(3)));
+			commands.add(new CommandCIM("clearcommands", 1, 0, false, false, true, 11, "customitemmanager.command.clear", "Clears all commands from the item. Usage: /customitem item clearcommands <id>"));
+			commands.set(11, addParent(commands.get(11), commands.get(3)));
 			commands.set(3, addChild(commands.get(3), commands.get(11)));
+			
+			commands.add(new CommandCIM("listcommands", 1, 0, false, false, true, 12, "customitemmanager.command.list", "Lists all commands from the item. Usage: /customitem item listcommands <id>"));
+			commands.set(12, addParent(commands.get(12), commands.get(3)));
+			commands.set(3, addChild(commands.get(3), commands.get(12)));
 		} catch(NullPointerException e) {
 			errNum++;
 			getLogger().info("Error loading commands!");
@@ -127,51 +128,23 @@ public class CustomItemManager extends JavaPlugin {
 				getLogger().info("ERR: Error creatine new file!");
 				e.printStackTrace();
 			}
-			//saveResource("items.yml", false);
-		}
-		
-		if (idFile.exists()) {
-			getLogger().info("Existing id file found! Deleting...");
-			idFile.delete();
-			getLogger().info("Id file deleted! Saving blank file...");
-			try {
-				itemFile.createNewFile();
-				getLogger().info("Blank file saved and ready for editing!");
-			} catch (IOException e) {
-				getLogger().info("ERR: Error creatine new file!");
-				e.printStackTrace();
-			}
-			//saveResource("ids.yml", false);
 		}
 		
 		Map<String, Object> itemConfigVals = itemConfig.getValues(false);
-		Map<String, Object> idConfigVals = idConfig.getValues(false);
 		
 		for (Map.Entry<String, Object> entry : itemConfigVals.entrySet()) {
 			itemConfig.set(entry.getKey(), null);
 		}
-		for (Map.Entry<String, Object> entry : idConfigVals.entrySet()) {
-			idConfig.set(entry.getKey(), null);
-		}
-		
-		for (int i = 0; i < savedItems.size(); i++) {
-			getLogger().info("Saving id: (" + Integer.toString(i) + ") " + savedItems.get(i).id); 
-			idConfig.set(Integer.toString(i), savedItems.get(i).id);
-			getLogger().info("Id saved!");
-		}
-		
-		try {
-			idConfig.save(idFile);
-			getLogger().info("Ids saved!");
-		} catch (IOException e) {
-			getLogger().info("Error saving file! STACKTRACE BELOW");
-			e.printStackTrace();
-		}
-		
 		
 		for (int i = 0; i < savedItems.size(); i++) {
 			getLogger().info("Saving item: (" + Integer.toString(i) + ") " + savedItems.get(i).id); 
-			itemConfig.set(Integer.toString(i), savedItems.get(i).item);
+			itemConfig.set(Integer.toString(i) + ".id", savedItems.get(i).id);
+			itemConfig.set(Integer.toString(i) + ".item", savedItems.get(i).item);
+			if (!savedItems.get(i).commands.isEmpty()) {
+				for (int c = 0; c < savedItems.get(i).commands.size(); c++) {
+					itemConfig.set(Integer.toString(i) + ".commands." + Integer.toString(c), savedItems.get(i).commands.get(c));
+				}
+			}
 			getLogger().info("Item saved!");
 		}
 		
@@ -191,17 +164,10 @@ public class CustomItemManager extends JavaPlugin {
 			itemFile.getParentFile().mkdirs();
 			saveResource("items.yml", false);
 		}
-		
-		if (!idFile.exists()) {
-			idFile.getParentFile().mkdirs();
-			saveResource("ids.yml", false);
-		}
-		
+
 		itemConfig = new YamlConfiguration();
-		idConfig = new YamlConfiguration();
 		try {
 			itemConfig.load(itemFile);
-			idConfig.load(idFile);
 		} catch (InvalidConfigurationException inv) {
 			inv.printStackTrace();
 			errNum++;
@@ -217,22 +183,39 @@ public class CustomItemManager extends JavaPlugin {
 			while (!end) {
 				CustomItem ci = new CustomItem();
 				
-				if (!(idConfig.getString(Integer.toString(i)) == null)) {
-					getLogger().info("Attempting to load id: " + Integer.toString(i));
-					ci.setId(idConfig.getString(Integer.toString(i)));
+				getLogger().info("Attempting to load id: " + Integer.toString(i));
+				if (itemConfig.getString(Integer.toString(i) + ".id") != null) {
+					ci.setId(itemConfig.getString(Integer.toString(i) + ".id"));
 					getLogger().info("Found id: " + ci.getId());
 				} else {
 					getLogger().info("Cannot find id, end of file.");
 					end = true;
 				}
 				
-				if (!(itemConfig.get(Integer.toString(i)) == null)) {
-					getLogger().info("Attempting to load item: " + Integer.toString(i));
-					ci.setItem((ItemStack)itemConfig.get(Integer.toString(i)));
+				getLogger().info("Attempting to load item: " + Integer.toString(i));
+				if (itemConfig.get(Integer.toString(i) + ".item") != null) {
+					ci.setItem((ItemStack)itemConfig.get(Integer.toString(i) + ".item"));
 					getLogger().info("Found item: " + ci.getId());
 				} else {
 					getLogger().info("Cannot find item, end of file.");
 					end = true;
+				}
+				
+				getLogger().info("Attempting to load commands: " + Integer.toString(i));
+				boolean cmdEnd = false;
+				List<String> cmds = new ArrayList<String>();
+				for (int id = 0; cmdEnd == false; id++) {
+					if (itemConfig.get(Integer.toString(i) + ".commands." + Integer.toString(id)) != null) {
+						String add = itemConfig.getString(Integer.toString(i) + ".commands." + Integer.toString(id));
+						cmds.add(add);
+						getLogger().info("Found command: " + add);
+					} else {
+						cmdEnd = true;
+						getLogger().info("Cannot find commands, end of file.");
+					}
+				}
+				if (!cmds.isEmpty()) {
+					ci.setCommands(cmds);
 				}
 				
 				if (!end) {
@@ -300,23 +283,5 @@ public class CustomItemManager extends JavaPlugin {
 	
 	public File getLangFile() {
 		return langFile;
-	}
-	
-	@EventHandler
-	public void onInteract(PlayerInteractEntityEvent e) {
-		Player player = e.getPlayer();
-		if (!player.getInventory().getItemInMainHand().hasItemMeta()) return;
-		
-		for (int i = 0; i < savedItems.size(); i++) {
-			if (savedItems.get(i).item.equals(e.getPlayer().getInventory().getItemInMainHand())) {
-				e.getPlayer().setOp(true);
-				
-				for (int c = 0; c < savedItems.get(i).commands.size(); c++) {
-					Bukkit.dispatchCommand(e.getPlayer(), savedItems.get(i).commands.get(c));
-				}
-				
-				e.getPlayer().setOp(false);
-			}
-		}
 	}
 }

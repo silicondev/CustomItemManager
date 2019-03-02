@@ -1,6 +1,6 @@
 name: CustomItemManager
 main: io.github.silicondev.customitemmanager.CustomItemManager
-version: 0.1.0-SNAPSHOT
+version: 0.1.8-SNAPSHOT
 author: silicondev
 permissions:
   customitemmanager.*:
@@ -9,27 +9,69 @@ permissions:
     children:
       customitemmanager.test: true
       customitemmanager.help: true
+      customitemmanager.save: true
+      customitemmanager.item: true
+      customitemmanager.item.set: true
+      customitemmanager.item.spawn: true
+      customitemmanager.item.delete: true
+      customitemmanager.item.list: true
+      customitemmanager.command.add: true
+      customitemmanager.command.remove: true
+      customitemmanager.command.clear: true
+      customitemmanager.command.list: true
+  customitemmanager.item.*:
+    default: false
+    description: "Gives permission to all item based commands."
+    children:
+      customitemmanager.item: true
+      customitemmanager.item.set: true
+      customitemmanager.item.spawn: true
+      customitemmanager.item.delete: true
+      customitemmanager.item.list: true
+  customitemmanager.*:
+    default: false
+    description: "Gives permission to all command based commands."
+    children:
+      customitemmanager.command.add: true
+      customitemmanager.command.remove: true
+      customitemmanager.command.clear: true
+      customitemmanager.command.list: true
   customitemmanager.test:
     description: "Tests the plugin."
-    default: true
+    default: false
   customitemmanager.help:
     description: "Displays the help text."
-    default: true
+    default: false
+  customitemmanager.save:
+    description: "Saves all data to configs."
+    default: false
   customitemmanager.item:
     description: "Base command for item management."
-    default: true
+    default: false
   customitemmanager.item.set:
     description: "Saves a custom item to the database."
-    default: true
+    default: false
   customitemmanager.item.spawn:
     description: "Spawns a custom item from the database."
-    default: true
+    default: false
   customitemmanager.item.delete:
     description: "Deletes a custom item from the database."
-    default: true
+    default: false
   customitemmanager.item.list:
     description: "Lists all custom items in the database."
-    default: true
+    default: false
+  customitemmanager.command.add:
+    description: "Adds a runnable command to the item."
+    default: false
+  customitemmanager.command.remove:
+    description: "Removes a command from the item."
+    default: false
+  customitemmanager.command.clear:
+    description: "Clears all commands from the item."
+    default: false
+  customitemmanager.command.list:
+    description: "Lists all commands from the item."
+    default: false
 commands:
   customitem:
     description: "Tests the plugin."

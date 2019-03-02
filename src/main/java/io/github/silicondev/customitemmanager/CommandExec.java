@@ -107,7 +107,7 @@ public class CommandExec implements CommandExecutor {
 		
 		if (args.size() < CustomItemManager.commands.get(id).reqParams) {     //Checks if command has correct amount of arguments, between the required and max. (Can allow for optional arguments)
 			sender.sendMessage(Lang.TITLE.toString() + Lang.ERR_NEGARG.toString() + Integer.toString(args.size()) + "/" + Integer.toString(CustomItemManager.commands.get(id).reqParams));
-		} else if (args.size() > CustomItemManager.commands.get(id).maxParams && !CustomItemManager.commands.get(id).noMaxParams) {
+		} else if ((!CustomItemManager.commands.get(id).noMaxParams) && args.size() > CustomItemManager.commands.get(id).maxParams) {
 			sender.sendMessage(Lang.TITLE.toString() + Lang.ERR_POSARG.toString() + Integer.toString(args.size()) + "/" + Integer.toString(CustomItemManager.commands.get(id).maxParams));
 		} else {
 			if (id == 0) {
@@ -144,11 +144,27 @@ public class CommandExec implements CommandExecutor {
 			} else if (id == 8) {
 				plugin.save();
 			} else if (id == 9) {
-				plugin.comOut.addCommand(sender, args.get(0), args.get(1));
+				String cmd = "";
+				for (int i = 1; i < args.size(); i++) {
+					if (i > 1) {
+						cmd = cmd + " ";
+					}
+					cmd = cmd + args.get(i);
+				}
+				plugin.comOut.addCommand(sender, args.get(0), cmd);
 			} else if (id == 10) {
-				plugin.comOut.removeCommand(sender, args.get(0), args.get(1));
+				String cmd = "";
+				for (int i = 1; i < args.size(); i++) {
+					if (i > 1) {
+						cmd = cmd + " ";
+					}
+					cmd = cmd + args.get(i);
+				}
+				plugin.comOut.removeCommand(sender, args.get(0), cmd);
 			} else if (id == 11) {
 				plugin.comOut.clearCommands(sender, args.get(0));
+			} else if (id == 12) {
+				plugin.comOut.listCommands(sender, args.get(0));
 			} else {
 				hasRun = false;
 			}

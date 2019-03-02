@@ -189,7 +189,7 @@ public class CommandOut {
 			sender.sendMessage(Lang.HELP_TITLE.toString() + Lang.ERR_NOITEM.toString());
 		} else {
 			CustomItemManager.savedItems = items;
-			sender.sendMessage(Lang.TITLE.toString() + Lang.ITEM_COMMAND_HEADER.toString() + cmd + Lang.ITEM_COMMANDADDED.toString() + items.get(idFound).item.getItemMeta().getDisplayName() + Lang.ITEM_COMMAND_FOOTER.toString());
+			sender.sendMessage(Lang.TITLE.toString() + Lang.ITEM_COMMAND_HEADER.toString() + cmd + Lang.ITEM_COMMANDADDED.toString() + items.get(idFound).id + Lang.ITEM_COMMAND_FOOTER.toString());
 		}
 	}
 	
@@ -220,6 +220,27 @@ public class CommandOut {
 				sender.sendMessage(Lang.TITLE.toString() + Lang.ITEM_COMMANDSCLEARED.toString() + items.get(i).item.getItemMeta().getDisplayName() + Lang.ITEM_COMMAND_FOOTER.toString());
 			}
 		}
+		if (!found) {
+			sender.sendMessage(Lang.TITLE.toString() + Lang.ERR_NOITEM);
+		}
 		CustomItemManager.savedItems = items;
+	}
+	
+	public void listCommands(CommandSender sender, String id) {
+		List<CustomItem> items = CustomItemManager.savedItems;
+		boolean found = false;
+		for (int i = 0; i < items.size() && !found; i++) {
+			if (items.get(i).id.equalsIgnoreCase(id)) {
+				found = true;
+				sender.sendMessage(Lang.TITLE.toString() + Lang.ITEM_COMMAND_LIST_TITLE.toString());
+				for (int c = 0; c < items.get(i).commands.size(); c++) {
+					sender.sendMessage(Lang.HELP_COMMAND_HEADER + items.get(i).commands.get(c));
+				}
+				sender.sendMessage(Lang.ITEM_LIST_FOOTER.toString());
+			}
+		}
+		if (!found) {
+			sender.sendMessage(Lang.TITLE.toString() + Lang.ERR_NOITEM);
+		}
 	}
 }

@@ -38,40 +38,40 @@ permissions:
       customitemmanager.command.list: true
   customitemmanager.test:
     description: "Tests the plugin."
-    default: false
+    default: op
   customitemmanager.help:
     description: "Displays the help text."
-    default: false
+    default: op
   customitemmanager.save:
     description: "Saves all data to configs."
-    default: false
+    default: op
   customitemmanager.item:
     description: "Base command for item management."
-    default: false
+    default: op
   customitemmanager.item.set:
     description: "Saves a custom item to the database."
-    default: false
+    default: op
   customitemmanager.item.spawn:
     description: "Spawns a custom item from the database."
-    default: false
+    default: op
   customitemmanager.item.delete:
     description: "Deletes a custom item from the database."
-    default: false
+    default: op
   customitemmanager.item.list:
     description: "Lists all custom items in the database."
-    default: false
+    default: op
   customitemmanager.command.add:
     description: "Adds a runnable command to the item."
-    default: false
+    default: op
   customitemmanager.command.remove:
     description: "Removes a command from the item."
-    default: false
+    default: op
   customitemmanager.command.clear:
     description: "Clears all commands from the item."
-    default: false
+    default: op
   customitemmanager.command.list:
     description: "Lists all commands from the item."
-    default: false
+    default: op
 commands:
   customitem:
     description: "Tests the plugin."

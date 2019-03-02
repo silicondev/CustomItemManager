@@ -4,7 +4,7 @@ version: 0.1.8-SNAPSHOT
 author: silicondev
 permissions:
   customitemmanager.*:
-    default: false
+    default: op
     description: "Gives permission to all commands."
     children:
       customitemmanager.test: true

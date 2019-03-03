@@ -9,6 +9,18 @@ Perfect for RPG servers.
 
 Download/Bug Reporting: https://www.spigotmc.org/resources/customitemmanager.65202/
 
+## Wiki
+### Saving items:
+ 
+Items can be saved to the items.yml file with an id, this will save all data about the item, including name, enchantments, lore, etc.
+
+### Adding commands:
+
+Multiple commands can be added to the item, this will allow any player that holds the item to run all commands sequentially regardless of permission level.
+THIS IS A DANGEROUS TOOL AND SHOULD BE USED WITH CAUTION
+But, this is also an incredibly useful tool. If you want special effects to be applied with a swing of a sword, or a teleport, or ANYTHING that can be run by a command, that can be added to be used with ease.
+Warning: Command block operators (@a, @p, etc) cannot be used with these commands currently. This may change in a future update.
+
 ## Commands
 
 > /customitem OR /customitem help <commandname>

@@ -20,6 +20,7 @@ Multiple commands can be added to the item, this will allow any player that hold
 THIS IS A DANGEROUS TOOL AND SHOULD BE USED WITH CAUTION
 But, this is also an incredibly useful tool. If you want special effects to be applied with a swing of a sword, or a teleport, or ANYTHING that can be run by a command, that can be added to be used with ease.
 Warning: Command block operators (@a, @p, etc) cannot be used with these commands currently. This may change in a future update.
+_However @s can be used to signify the holder's username._
 
 ## Commands
 

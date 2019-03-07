@@ -30,6 +30,7 @@ public enum Lang {
 	ERR_NEGARG("err-negarg", "ERR: Not enough arguments: "),
 	ERR_POSARG("err-posarg", "ERR: Too many arguments: "),
 	ERR_NOCOMMAND("err-nocommand", "ERR: Unknown command!"),
+	ERR_ITEM_NOCOMMAND("err-item-nocommand", "ERR: Command not found on specified item!"),
 	ERR_NOITEM("err-noitem", "ERR: 404 Item not found!"),
 	ERR_ITEM_EXISTS("err-item-exists", "ERR: Item with that id already exists!"),
 	/*DEBUGS*/

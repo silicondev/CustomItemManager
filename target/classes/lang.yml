@@ -24,6 +24,7 @@ err-playeronly: "ERR: Command can only be run as a player!"
 err-negarg: "ERR: Not enough arguments: "
 err-posarg: "ERR: Too many arguments: "
 err-nocommand: "ERR: Unknown command!"
+err-item-nocommand: "ERR: Command not found on specified item!"
 err-noitem: "ERR: 404 Item not found!"
 err-item-exists: "ERR: Item with that id already exists!"
 #DEBUGS

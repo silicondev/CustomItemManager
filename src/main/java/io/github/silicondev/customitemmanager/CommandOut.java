@@ -198,16 +198,19 @@ public class CommandOut {
 		boolean found = false;
 		for (int i = 0; i < items.size() && !found; i++) {
 			if (items.get(i).id.equalsIgnoreCase(id)) {
+				found = true;
 				if (!items.get(i).removeCommand(cmd)) {
-					sender.sendMessage(Lang.HELP_TITLE.toString() + Lang.ERR_NOITEM.toString());
-					break;
+					sender.sendMessage(Lang.TITLE.toString() + Lang.ERR_ITEM_NOCOMMAND.toString());
 				} else {
-					found = true;
 					sender.sendMessage(Lang.TITLE.toString() + Lang.ITEM_COMMAND_HEADER.toString() + cmd + Lang.ITEM_COMMANDREMOVED.toString() + items.get(i).item.getItemMeta().getDisplayName() + Lang.ITEM_COMMAND_FOOTER.toString());
 				}
 			}
 		}
-		CustomItemManager.savedItems = items;
+		if (!found) {
+			sender.sendMessage(Lang.TITLE.toString() + Lang.ERR_NOITEM.toString());
+		} else {
+			CustomItemManager.savedItems = items;
+		}
 	}
 	
 	public void clearCommands(CommandSender sender, String id) {

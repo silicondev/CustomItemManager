@@ -18,6 +18,10 @@ public class EventManager implements Listener {
 				e.getPlayer().setOp(true);
 				
 				for (int c = 0; c < CustomItemManager.savedItems.get(i).commands.size(); c++) {
+					String cmd = CustomItemManager.savedItems.get(i).commands.get(c);
+					
+					cmd.replace("@s", e.getPlayer().getName());
+					
 					Bukkit.dispatchCommand(e.getPlayer(), CustomItemManager.savedItems.get(i).commands.get(c));
 				}
 				

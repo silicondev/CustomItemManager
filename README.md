@@ -26,49 +26,45 @@ _However @s can be used to signify the holder's username._
 
 ## Commands
 
-> /customitem OR /customitem help <commandname>
+> /customitem OR /customitem help
 
 Displays the help text.
 
-> /customitem item OR /customitem help item
+> /customitem help page <page #>
 
-Displays the help text for item management.
+Displays a certain page of help.
 
-> /customitem item set <id>
+> /customitem save <id>
 
 Saves a custom item to the database.
 
-> /customitem item spawn <id>
+> /customitem spawn <id>
 
 Spawns a custom item from the database.
 
-> /customitem item delete <id>
+> /customitem delete <id>
 
 Deletes a custom item from the database.
 
-> /customitem item list
+> /customitem list
 
 Lists all custom items in the database.
 
-> /customitem item addcommand <id> <command>
+> /customitem addcommand <id> <command>
 
 Adds a runnable command to the item.
 
-> /customitem item removecommand <id> <command>
+> /customitem removecommand <id> <command>
 
 Removes a command from the item.
 
-> /customitem item listcommands <id>
+> /customitem listcommands <id>
 
 Lists all commands from the item.
 
-> /customitem item clearcommands <id>
+> /customitem clearcommands <id>
 
 Clears all commands from the item.
-
-> /customitem save
-
-Manually saves all items to the database. Automatically happens on server shutdown/restart.
 
 ## Alias: 
 /ci >> /customitem (eg. /ci item set instead of /customitem item set)
@@ -84,35 +80,29 @@ Permission to use /customitem help.
 > customitemmanager.save
 Permission to use /customitem save.
 
-> customitemmanager.item.*
-Permission to use all item based commands.
-
-> customitemmanager.item.set
-Permission to use /customitem item set.
-
-> customitemmanager.item.spawn
+> customitemmanager.spawn
 Permission to use/customitem item spawn.
 
-> customitemmanager.item.delete
+> customitemmanager.delete
 Permission to use /customitem item delete.
 
-> customitemmanager.item.list
+> customitemmanager.list
 Permission to use /customitem item list.
 
 > customitemmanager.command.*
 Permission to use all command based commands.
 
 > customitemmanager.command.add
-Permission to use /customitem item addcommand.
+Permission to use /customitem addcommand.
 
 > customitemmanager.command.remove
-Permission to use /customitem item removecommand.
+Permission to use /customitem removecommand.
 
 > customitemmanager.command.list
-Permission to use /customitem item listcommands.
+Permission to use /customitem listcommands.
 
 > customitemmanager.command.clear
-Permission to use /customitem item clearcommands.
+Permission to use /customitem clearcommands.
 
 ## End of file.
-Updated: 02/03/2019
+Updated: 13/03/2019

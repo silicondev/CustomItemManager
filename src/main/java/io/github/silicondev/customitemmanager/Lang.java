@@ -8,13 +8,15 @@ public enum Lang {
 	TITLE("plugin-name", "&f[&eCustomItemManager&f] &r"),
 	TEST_ARG("test-arg", "Test Command successful! Test arg: "),
 	TEST_NOARG("test-noarg", "Test command successful with no arguments!"),
+	FOOTER("help-footer", "========="),
+	HEADER("help-command-header", "> "),
 	HELP_TITLE("help-title", "Searched Commands:"),
-	HELP_FOOTER("help-footer", "========="),
-	HELP_COMMAND_HEADER("help-command-header", "> /"),
+	HELP_JSON_PAGESELECT_PREVNEXT("help-json-pageselect-prevnext", "[\"\",{\"text\":\"Page: \"},{\"text\":\"[<]\",\"color\":\"yellow\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/customitem help page %prevPage%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"Previous Page\"}},{\"text\":\" %currentPage%\",\"color\":\"green\"},{\"text\":\"/%totalPage%\",\"color\":\"dark_green\"},{\"text\":\" \"},{\"text\":\"[>]\",\"color\":\"yellow\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/customitem help page %nextPage%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"Next Page\"}}]"),
+	HELP_JSON_PAGESELECT_NEXT("help-json-pageselect-prevnext", "[\"\",{\"text\":\"Page: \"},{\"text\":\"[<]\",\"color\":\"gray\"},{\"text\":\" %currentPage%\",\"color\":\"green\"},{\"text\":\"/%totalPage%\",\"color\":\"dark_green\"},{\"text\":\" \"},{\"text\":\"[>]\",\"color\":\"yellow\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/customitem help page %nextPage%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"Next Page\"}}]"),
+	HELP_JSON_PAGESELECT_PREV("help-json-pageselect-prevnext", "[\"\",{\"text\":\"Page: \"},{\"text\":\"[<]\",\"color\":\"yellow\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/customitem help page %prevPage%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"Previous Page\"}},{\"text\":\" %currentPage%\",\"color\":\"green\"},{\"text\":\"/%totalPage%\",\"color\":\"dark_green\"},{\"text\":\" \"},{\"text\":\"[>]\",\"color\":\"gray\"}]"),
 	ITEM_SAVED("item-saved", "Item saved!"),
 	ITEM_LIST_TITLE("item-list-title", "All items:"),
 	ITEM_COMMAND_LIST_TITLE("item-command-list-title", "All commands:"),
-	ITEM_LIST_FOOTER("item-list-footer", "========="),
 	ITEM_SPAWNED("item-spawned", "Item spawned!"),
 	ITEM_DELETED("item-deleted", "Item removed!"),
 	ITEM_COMMAND_HEADER("item-command-header", "Command {"),
@@ -29,10 +31,12 @@ public enum Lang {
 	ERR_PLAYERONLY("err-playeronly", "ERR: Command can only be run as a player!"),
 	ERR_NEGARG("err-negarg", "ERR: Not enough arguments: "),
 	ERR_POSARG("err-posarg", "ERR: Too many arguments: "),
+	ERR_INVARG("err-invarg", "ERR: Invalid argument!"),
 	ERR_NOCOMMAND("err-nocommand", "ERR: Unknown command!"),
 	ERR_ITEM_NOCOMMAND("err-item-nocommand", "ERR: Command not found on specified item!"),
 	ERR_NOITEM("err-noitem", "ERR: 404 Item not found!"),
 	ERR_ITEM_EXISTS("err-item-exists", "ERR: Item with that id already exists!"),
+	ERR_HELP_NOPAGE("err-help-nopage", "ERR: That page doesn't exist!"),
 	/*DEBUGS*/
 	DEB_COMMANDFOUND("deb-commandfound", "DEBUG: Command found: "),
 	DEB_COMMANDCHILDREN_1("deb-commandchildren-1", "DEBUG: Command "),
@@ -79,5 +83,40 @@ public enum Lang {
 	public String getPath() {
 		return this.path;
 	}
+	
+	public String getString() {
+		return LANG.getString(this.path, def);
+	}
+	
+	public String getDefaultString() {
+		return this.def;
+	}
+	
+	public String runOperators(boolean useDefault) {
+		String out;
+		if (useDefault) {
+			out = this.def;
+		} else {
+			out = LANG.getString(this.path, def);
+		}
+		
+		for (int i = 0; i < Operators.values().length; i++) {
+			if (out.contains(Operators.values()[i].getOperator())) {
+				out = out.replace(Operators.values()[i].getOperator(), Operators.values()[i].getReturn());
+			}
+		}
+		
+		return out;
+	}
+	
+	/*
+# For the next JSON string, please include all operators:
+# %nextPage%
+# %prevPage%
+# %currentPage%
+# %totalPage%
+# And please remember to put a  before every " (if the string begins and ends with " then ignore these when placing )
+help-json-pageselect: "["",{"text":"Page: "},{"text":"[<]","color":"yellow","clickEvent":{"action":"run_command","value":"customitem help page %prevPage%"},"hoverEvent":{"action":"show_text","value":"Previous Page"}},{"text":" %currentPage%","color":"green"},{"text":"/%totalPage%","color":"dark_green"},{"text":" "},{"text":"[>]","color":"yellow","clickEvent":{"action":"run_command","value":"customitem help page %nextPage%"},"hoverEvent":{"action":"show_text","value":"Next Page"}}]"
+	*/
 	
 }

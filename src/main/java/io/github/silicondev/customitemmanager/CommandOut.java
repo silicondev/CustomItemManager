@@ -26,42 +26,8 @@ public class CommandOut {
 		}
 	}
 	
-	public void help(CommandSender sender, boolean hasArgs, String arg) {
-		sender.sendMessage(Lang.TITLE.toString() + CustomItemManager.version);
-		sender.sendMessage(Lang.HELP_TITLE.toString());
-		if (hasArgs) {
-			boolean found = false;
-			for (int i = 0; i < CustomItemManager.commands.size() && !found; i++) {
-				if (CustomItemManager.commands.get(i).inputName.equalsIgnoreCase(arg)) {
-					found = true;
-					displayCommandHelp(sender, CustomItemManager.commands.get(i));
-				}
-			}
-		} else {
-			for (int i = 0; i < CustomItemManager.commands.size(); i++) {
-				displayCommandHelp(sender, CustomItemManager.commands.get(i));
-			}
-		}
-		sender.sendMessage(Lang.HELP_FOOTER.toString());
-	}
-	
-	public void displayCommandHelp(CommandSender sender, CommandCIM cmd) {
-		String output = "";
-		if (cmd.hasParent) {
-			boolean foundEnd = false;
-			CommandCIM getCmd = cmd;
-			while (!foundEnd) {
-				output = getCmd.inputName + " " + output;
-				if (getCmd.hasParent) {
-					getCmd = getCmd.parent;
-				} else {
-					foundEnd = true;
-				}
-			}
-		} else {
-			output = cmd.inputName;
-		}
-		sender.sendMessage(Lang.HELP_COMMAND_HEADER.toString() + output + " | " + cmd.description);
+	public void help(CommandSender sender, int page) {
+		plugin.helpPage.display(sender, page);
 	}
 	
 	public void addItem(CommandSender sender, String id) {
@@ -92,6 +58,8 @@ public class CommandOut {
 			CustomItemManager.savedItems.add(ci);
 			player.getInventory().setItemInMainHand(item);
 			sender.sendMessage(Lang.TITLE.toString() + Lang.ITEM_SAVED.toString());
+			
+			plugin.save();
 		}
 	}
 	
@@ -105,9 +73,9 @@ public class CommandOut {
 			} else {
 				itemName = ci.getItem().getType().name();
 			}
-			sender.sendMessage(String.valueOf(ChatColor.translateAlternateColorCodes('&', Lang.TITLE.toString() + itemName + "&r (" + ci.getId() + ")")));
+			sender.sendMessage(String.valueOf(ChatColor.translateAlternateColorCodes('&', Lang.HEADER.toString() + itemName + "&r (" + ci.getId() + ")")));
 		}
-		sender.sendMessage(Lang.ITEM_LIST_FOOTER.toString());
+		sender.sendMessage(Lang.FOOTER.toString());
 	}
 	
 	public void spawnItem(CommandSender sender, String id) {
@@ -140,26 +108,26 @@ public class CommandOut {
 					
 					ItemStack[] items = inv.getContents();
 					for (int item = 0; item < items.length; item++) {
-						if (plugin.debugMode) {plugin.getLogger().info("DEBUG: Testing item: " + Integer.toString(item));}
+						if (CustomItemManager.debugMode) {plugin.getLogger().info("DEBUG: Testing item: " + Integer.toString(item));}
 						ItemStack currentItem = items[item];
 						if (currentItem != null) {
 							if (currentItem.hasItemMeta()) {
 								ItemMeta meta = currentItem.getItemMeta();
 								if (meta.hasLore()) {
-									if (plugin.debugMode) {plugin.getLogger().info("DEBUG: Item has lore.");}
+									if (CustomItemManager.debugMode) {plugin.getLogger().info("DEBUG: Item has lore.");}
 									List<String> lore = meta.getLore();
 									for (int loreNum = 0; loreNum < lore.size(); loreNum++) {
-										if (plugin.debugMode) {plugin.getLogger().info("DEBUG: Testing lore line " + Integer.toString(loreNum) + ": " + lore.get(loreNum) + " contains " + id + "?");}
+										if (CustomItemManager.debugMode) {plugin.getLogger().info("DEBUG: Testing lore line " + Integer.toString(loreNum) + ": " + lore.get(loreNum) + " contains " + id + "?");}
 										if (String.valueOf(lore.get(loreNum)).contains(id)) {
-											if (plugin.debugMode) {plugin.getLogger().info("DEBUG: Lore matches ID");}
+											if (CustomItemManager.debugMode) {plugin.getLogger().info("DEBUG: Lore matches ID");}
 											lore.remove(loreNum);
-											if (plugin.debugMode) {plugin.getLogger().info("DEBUG: Lore removed.");}
+											if (CustomItemManager.debugMode) {plugin.getLogger().info("DEBUG: Lore removed.");}
 										}
 									}
 									meta.setLore(lore);
 									items[item].setItemMeta(meta);
 									player.getInventory().setContents(items);
-									if (plugin.debugMode) {plugin.getLogger().info("DEBUG: Changed inventory.");}
+									if (CustomItemManager.debugMode) {plugin.getLogger().info("DEBUG: Changed inventory.");}
 								}
 							}
 						}
@@ -167,6 +135,8 @@ public class CommandOut {
 				}
 				
 				sender.sendMessage(Lang.TITLE.toString() + Lang.ITEM_DELETED.toString());
+				
+				plugin.save();
 			}
 		}
 		if (!found) {
@@ -190,6 +160,8 @@ public class CommandOut {
 		} else {
 			CustomItemManager.savedItems = items;
 			sender.sendMessage(Lang.TITLE.toString() + Lang.ITEM_COMMAND_HEADER.toString() + cmd + Lang.ITEM_COMMANDADDED.toString() + items.get(idFound).id + Lang.ITEM_COMMAND_FOOTER.toString());
+			
+			plugin.save();
 		}
 	}
 	
@@ -203,6 +175,8 @@ public class CommandOut {
 					sender.sendMessage(Lang.TITLE.toString() + Lang.ERR_ITEM_NOCOMMAND.toString());
 				} else {
 					sender.sendMessage(Lang.TITLE.toString() + Lang.ITEM_COMMAND_HEADER.toString() + cmd + Lang.ITEM_COMMANDREMOVED.toString() + items.get(i).item.getItemMeta().getDisplayName() + Lang.ITEM_COMMAND_FOOTER.toString());
+					
+					plugin.save();
 				}
 			}
 		}
@@ -227,6 +201,8 @@ public class CommandOut {
 			sender.sendMessage(Lang.TITLE.toString() + Lang.ERR_NOITEM);
 		}
 		CustomItemManager.savedItems = items;
+		
+		plugin.save();
 	}
 	
 	public void listCommands(CommandSender sender, String id) {
@@ -237,9 +213,9 @@ public class CommandOut {
 				found = true;
 				sender.sendMessage(Lang.TITLE.toString() + Lang.ITEM_COMMAND_LIST_TITLE.toString());
 				for (int c = 0; c < items.get(i).commands.size(); c++) {
-					sender.sendMessage(Lang.HELP_COMMAND_HEADER + items.get(i).commands.get(c));
+					sender.sendMessage(Lang.HEADER + items.get(i).commands.get(c));
 				}
-				sender.sendMessage(Lang.ITEM_LIST_FOOTER.toString());
+				sender.sendMessage(Lang.FOOTER.toString());
 			}
 		}
 		if (!found) {

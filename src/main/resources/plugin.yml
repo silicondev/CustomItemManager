@@ -1,6 +1,6 @@
 name: CustomItemManager
 main: io.github.silicondev.customitemmanager.CustomItemManager
-version: 0.2.1-SNAPSHOT
+version: 0.2.5-SNAPSHOT
 author: silicondev
 permissions:
   customitemmanager.*:
@@ -10,26 +10,15 @@ permissions:
       customitemmanager.test: true
       customitemmanager.help: true
       customitemmanager.save: true
-      customitemmanager.item: true
-      customitemmanager.item.set: true
-      customitemmanager.item.spawn: true
-      customitemmanager.item.delete: true
-      customitemmanager.item.list: true
+      customitemmanager.spawn: true
+      customitemmanager.delete: true
+      customitemmanager.list: true
       customitemmanager.command.add: true
       customitemmanager.command.remove: true
       customitemmanager.command.clear: true
       customitemmanager.command.list: true
-  customitemmanager.item.*:
-    default: false
-    description: "Gives permission to all item based commands."
-    children:
-      customitemmanager.item: true
-      customitemmanager.item.set: true
-      customitemmanager.item.spawn: true
-      customitemmanager.item.delete: true
-      customitemmanager.item.list: true
-  customitemmanager.*:
-    default: false
+  customitemmanager.command.*:
+    default: op
     description: "Gives permission to all command based commands."
     children:
       customitemmanager.command.add: true
@@ -43,21 +32,15 @@ permissions:
     description: "Displays the help text."
     default: op
   customitemmanager.save:
-    description: "Saves all data to configs."
-    default: op
-  customitemmanager.item:
-    description: "Base command for item management."
-    default: op
-  customitemmanager.item.set:
     description: "Saves a custom item to the database."
     default: op
-  customitemmanager.item.spawn:
+  customitemmanager.spawn:
     description: "Spawns a custom item from the database."
     default: op
-  customitemmanager.item.delete:
+  customitemmanager.delete:
     description: "Deletes a custom item from the database."
     default: op
-  customitemmanager.item.list:
+  customitemmanager.list:
     description: "Lists all custom items in the database."
     default: op
   customitemmanager.command.add:

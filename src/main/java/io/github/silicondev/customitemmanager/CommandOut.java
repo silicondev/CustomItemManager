@@ -222,4 +222,13 @@ public class CommandOut {
 			sender.sendMessage(Lang.TITLE.toString() + Lang.ERR_NOITEM);
 		}
 	}
+	
+	public void reload(CommandSender sender) {
+		sender.sendMessage(Lang.TITLE.toString() + "Saving items!");
+		plugin.save();
+		sender.sendMessage(Lang.TITLE.toString() + "Loading items!");
+		plugin.load();
+		sender.sendMessage(Lang.TITLE.toString() + "Loading texts!");
+		plugin.loadLang();
+	}
 }

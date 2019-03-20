@@ -17,7 +17,7 @@ import java.util.Map;
 public class CustomItemManager extends JavaPlugin {
 	public static String pluginName = "Custom Item Manager";
 	public static boolean debugMode = false;
-	public static String version = "Beta 0.2.5";
+	public static String version = "Beta 0.2.6";
 	private FileConfiguration itemConfig;
 	public static YamlConfiguration langConfig;
 	private File itemFile = new File(getDataFolder(), "items.yml");
@@ -39,6 +39,8 @@ public class CustomItemManager extends JavaPlugin {
 		int errNum = 0;
 		try {
 			this.getCommand("customitem").setExecutor(new CommandExec(this));
+			
+			//command, required params, optional params, player only, has children, has parent, id, perm node, description.
 			commands.add(new CommandCIM("customitem", 0, -1, false, true, false, 0, "default", " | Base command for " + pluginName));
 			//CHILDREN
 			commands.add(new CommandCIM("test", 0, -1, false, false, true, 1, "customitemmanager.test", "<testArg> | Tests the plugin."));
@@ -73,6 +75,9 @@ public class CustomItemManager extends JavaPlugin {
 			
 			commands.add(new CommandCIM("listcommands", 1, 0, false, false, true, 11, "customitemmanager.command.list", "<id> | Lists all commands from the item."));
 			addHierarchy(11, 0);
+			
+			commands.add(new CommandCIM("reload", 0, 0, false, false, true, 12, "customitemmanager.reload", " | Reloads the plugin's configuration files."));
+			addHierarchy(12, 0);
 		} catch(NullPointerException e) {
 			errNum++;
 			getLogger().info("Error loading commands!");

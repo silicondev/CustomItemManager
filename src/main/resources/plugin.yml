@@ -1,6 +1,6 @@
 name: CustomItemManager
 main: io.github.silicondev.customitemmanager.CustomItemManager
-version: 0.2.5-SNAPSHOT
+version: 0.2.6-SNAPSHOT
 author: silicondev
 permissions:
   customitemmanager.*:
@@ -17,6 +17,7 @@ permissions:
       customitemmanager.command.remove: true
       customitemmanager.command.clear: true
       customitemmanager.command.list: true
+      customitemmanager.reload: true
   customitemmanager.command.*:
     default: op
     description: "Gives permission to all command based commands."
@@ -55,6 +56,8 @@ permissions:
   customitemmanager.command.list:
     description: "Lists all commands from the item."
     default: op
+  customitemmanager.reload:
+    description: "Reloads the plugin's configuration files."
 commands:
   customitem:
     description: "Tests the plugin."

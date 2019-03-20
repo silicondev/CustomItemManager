@@ -165,6 +165,8 @@ public class CommandExec implements CommandExecutor {
 				plugin.comOut.clearCommands(sender, args.get(0));
 			} else if (id == 11) {
 				plugin.comOut.listCommands(sender, args.get(0));
+			} else if (id == 12) {
+				plugin.comOut.reload(sender);
 			} else {
 				hasRun = false;
 			}

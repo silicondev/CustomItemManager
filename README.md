@@ -38,6 +38,10 @@ Displays a certain page of help.
 
 Saves a custom item to the database.
 
+> /customitem reload
+
+Reloads the plugin's configuration files.
+
 > /customitem spawn <id>
 
 Spawns a custom item from the database.
